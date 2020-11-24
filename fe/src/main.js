@@ -31,6 +31,7 @@ if (process.env.VUE_APP_TEST === 'e2e') {
 Vue.use(BootstrapVue)
 Vue.use(Vuelidate)
 Vue.use(VueMask)
+Vue.use(require('vue-moment'))
 
 Vue.component('apexchart', VueApexCharts)
 
