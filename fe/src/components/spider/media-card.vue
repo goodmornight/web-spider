@@ -246,7 +246,7 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: rgba(52, 58, 64, 0.55);
+  background-color: rgba(255, 217, 102, 0.35);
   border-radius: 0.25rem;
 }
 </style>
