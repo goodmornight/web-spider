@@ -38,7 +38,7 @@ export default {
     <div class="col-1">{{ domain }}</div>
     <div class="col-1">{{ type }}</div>
     <div class="col-2">{{ url }}</div>
-    <div class="col-2">
+    <!-- <div class="col-2">
       <span class="badge"
       :class="{
         'badge-soft-success': isCompleted,
@@ -47,12 +47,17 @@ export default {
       >
         {{ isCompleted ? '完成' : '未完成' }}
       </span>
-    </div>
+    </div> -->
     <div class="col-2 time">
       {{ createTime | moment('YY/MM/DD HH:mm:ss') }}
     </div>
     <div class="col-2 time">
       {{ updateTime | moment('YY/MM/DD HH:mm:ss') }}
+    </div>
+    <div class="row">
+      <div>
+        
+      </div>
     </div>
   </div>	
 </template>
