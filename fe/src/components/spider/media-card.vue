@@ -5,49 +5,9 @@ import { videoPlayer } from 'vue-video-player'
 
 export default {
   props: {
-    username: {
-      type: String,
-      default: 'username',
-    },
-    avatar: {
-      type: String,
-      default: null,
-    },
-    title: {
-      type: String,
-      default: 'title',
-    },
-    context: {
-      type: String,
-      default: "Some quick example text to build on the card title and make up the bulk of the card's content. With supporting text below as a natural lead-in to additional content.",
-    },
-    poster: {
-      type: String,
+    media: {
+      type: Object,
       default: null
-    },
-    fileUrl:{
-      type: String,
-      default: null,
-    },
-    fileType: {
-      type: String,
-      default: 'video/mp4',
-    },
-    fileSize: {
-      type: Number,
-      default: 0
-    },
-    updateTime: {
-      type: Number,
-      default: 1606120037,
-    },
-    source: {
-      type: String,
-      default: null,
-    },
-    isEncrypted: {
-      type: Boolean,
-      default: false,
     }
   },
   components: {
@@ -69,89 +29,137 @@ export default {
   },
   data(){
     return {
-      playerOptions: {
+      ...this.media,
+      defaultThumbnail: 'https://picsum.photos/900/600/?image=41',
+      icons:{
+        'youtube': require('@assets/images/brands/youtube.svg'),
+        'twitter': require('@assets/images/brands/twitter.svg'),
+        'vimeo': require('@assets/images/brands/vimeo.svg'),
+        'flickr': require('@assets/images/brands/flickr.svg'),
+        'clyp.it': require('@assets/images/brands/clyp.it.svg'),
+      },
+      // playerOptions: {
+      //   height: '300',
+      //   // autoplay: true,
+      //   muted: true,
+      //   language: 'zh-CN',
+      //   fluid: true,
+      //   playbackRates: [0.7, 1.0, 1.5, 2.0],
+      //   sources: [{
+      //     type: "video/mp4",
+      //     // mp4
+      //     src: "http://vjs.zencdn.net/v/oceans.mp4",
+      //     // webm
+      //     // src: "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm"
+      //   }],
+      //   poster: "https://surmon-china.github.io/vue-quill-editor/static/images/surmon-1.jpg",
+      //   notSupportedMessage: '此视频暂无法播放，请稍后再试',
+      // }
+    }
+  },
+  computed: {
+    isEncrypted(){
+      return this.hidden_info.length !== 0
+    },
+
+    player(){
+      return this.$refs.videoPlayer.player
+    },
+
+    playerOptions(){
+      return {
         height: '300',
-        // autoplay: true,
         muted: true,
         language: 'zh-CN',
         fluid: true,
         playbackRates: [0.7, 1.0, 1.5, 2.0],
         sources: [{
-          type: "video/mp4",
-          // mp4
-          src: "http://vjs.zencdn.net/v/oceans.mp4",
-          // webm
-          // src: "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm"
+          type: this.mime,
+          src: this.url,
         }],
-        poster: "https://surmon-china.github.io/vue-quill-editor/static/images/surmon-1.jpg",
+        poster: this.thumbnail_url,
         notSupportedMessage: '此视频暂无法播放，请稍后再试',
       }
     }
   },
-  computed: {
-    player() {
-      return this.$refs.videoPlayer.player
-    }
-  },
   methods: {
-
+    // 显示Modal
+    showModal(){
+      this.$refs.modal.show()
+    }
   }
 }
 </script>
 <template>
-
+<div class="col-xl-2 col-lg-3 col-md-6 col-sm-12">
   <div class="media-card">
+    <!-- 卡片头部信息 -->
     <div class="media-card-top">
-      <b-img src="https://picsum.photos/900/600/?image=41" fluid alt="Responsive image"></b-img>
-      <i v-b-modal.modal-center variant="warning" class="uil uil-play"></i>
+      <b-img
+        :src="`${ thumbnail_url === ''? defaultThumbnail : thumbnail_url }`"
+        :alt="file_name"
+        fluid
+      ></b-img>
+      <i v-if="type!=='image'" variant="warning" class="uil uil-play" @click="showModal"></i>
     </div>
-    <div class="media-card-body">
-      <h5 class="card-title font-size-16">{{ title }}</h5>
-      <div class="media">
-        <img
-          src="@assets/images/users/avatar-7.jpg"
-          class="avatar-sm rounded-circle mr-2"
-          alt="avatar"
-        />
-        <div class="info-body">
-          <h6 class="user-name">{{ username }}</h6>
-          <span class="update-time">{{ updateTime | moment('YY/MM/DD HH:mm:ss') }}</span>
-          <img class="source" src="@assets/images/brands/Youtube.svg"></img>
+    
+    <div class="position-relative">
+      <!-- 卡片中间用户/来源等信息 -->
+      <div class="media-card-body">
+        <h5 class="media-title">{{ title }}</h5>
+        <div class="d-flex flex-row align-self-center">
+          <img
+            class="avatar-sm rounded-circle mr-2"
+            :src="`${ author_avatar }`"
+            :alt="`${ author }`"
+          />
+          <div class="info-body d-flex flex-column align-self-center">
+            <span class="author">{{ author }}</span>
+            <span class="update-time">{{ update_time | moment('YY/MM/DD HH:mm:ss') }}</span>
+          </div>
+          <img class="source" :src="icons[domain]" />
+        </div>
+        <p class="content ml-auto">
+          {{ content }}
+        </p>
+      </div>
+      <!-- 卡片底部文件类型和版权信息 -->
+      <div class="media-card-footer">
+        <span class="fileType">{{ mime }}</span>
+        <span class="fileSize">
+          <i class="uil uil-down-arrow"></i>
+          {{ file_size | gbFilter }}
+        </span>
+        <span v-show="isEncrypted" class="ml-auto encrypted">
+          Encrypted data detected
+        </span>
+        <div v-show="isEncrypted" class="media-card-overlay"> 
         </div>
       </div>
-      <p class="context">
-        {{ context }}
-      </p>
+
     </div>
-    <div class="media-card-footer">
-      <span class="fileType mr-2">{{ fileType }}</span>
-      <span class="fileSize">
-        <i class="uil uil-down-arrow"></i>
-        {{ fileSize | gbFilter }}
-      </span>
-      <span v-show="isEncrypted" class="encrypted">
-        Encrypted data detected
-      </span>
-    </div>
+    
+    <!-- 视频、音频弹出框 -->
     <b-modal
-      id="modal-center"
+      ref="modal"
       centered
       size="lg"
-      :title="title"
+      :title="file_name"
       title-class="font-18"
+      header-class="d-none"
+      content-class="border-0"
+      body-class="p-0"
       hide-footer
     >
-      <b-container fluid>
-        <VideoPlayer 
-        class="vjs-custom-skin video-player"
-        ref="videoPlayer"
-        :options="playerOptions"
-        :playsinline="true" />
-      </b-container>
+      <VideoPlayer 
+      class="vjs-custom-skin video-player"
+      ref="videoPlayer"
+      :options="playerOptions"
+      :playsinline="true" />
     </b-modal>
-    <div v-show="isEncrypted" class="media-card-overlay"> 
-    </div>
+    
   </div>
+</div>
 </template>
 <style type="text/css">
 .media-card {
@@ -164,6 +172,7 @@ export default {
   border: 0 solid rgba(0, 0, 0, 0.125);
   box-shadow: 0 0.05rem 0.01rem rgba(75, 75, 90, 0.075);
   border-radius: 0.25rem;
+  margin-bottom: 2rem;
 }
 .media-card-top {
   position: relative;
@@ -174,7 +183,8 @@ export default {
 }
 .media-card-top img {
   vertical-align: middle;
-  border-style: none;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
 }
 .media-card-top i {
   position: absolute;
@@ -185,8 +195,16 @@ export default {
   font-size: 3.5rem;
   border-style: none;
 }
+.media-title{
+  font-size: 18px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  margin-top: 0;
+  margin-bottom: 0.8rem;
+}
 .media-card-body {
-  margin: 1rem;
+  margin: 1rem 1rem 0 1rem;
 }
 .info {
   display: flex;
@@ -196,9 +214,11 @@ export default {
 .info-body {
   flex: 1;
 }
-.user-name {
-  margin-top: 0;
-  margin-bottom: 0;
+.author {
+  font-size: 16px;
+  line-height: 1rem;
+  /*margin-top: 0;
+  margin-bottom: 0;*/
 }
 .update-time {
   font-size: 0.6rem;
@@ -207,10 +227,10 @@ export default {
   margin-bottom: 0;
 }
 .source {
-  float: right;
-  width: 15%;
+  /*float: right;*/
+  width: 2rem;
 }
-.context {
+.content {
   overflow: hidden;
   text-overflow: ellipsis;
   display:-webkit-box;
@@ -220,15 +240,28 @@ export default {
 }
 
 .media-card-footer {
-  margin: 1rem;
-  margin-top: 0;
+  display: flex;
+  max-width: 100%;
+  margin: 0.3rem 1rem 0.8rem 1rem;
+  /*margin-top: 0;*/
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 .fileType {
   color: #0070c0;
+  margin-right: 1rem;
+}
+.fileSize {
+  margin-right: 1rem;
 }
 .encrypted {
   color: #ff0000;
-  float: right;
+  /*float: right;
+  text-align: right;*/
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 .video-player div {
   margin: 0 auto;
@@ -249,4 +282,18 @@ export default {
   background-color: rgba(255, 217, 102, 0.35);
   border-radius: 0.25rem;
 }
+.media-body-class {
+  padding: 0;
+}
+/*.model-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+  display: none;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: 0;
+}*/
 </style>

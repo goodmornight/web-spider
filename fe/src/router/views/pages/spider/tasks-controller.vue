@@ -27,7 +27,7 @@ export default {
         value="Some text value..."
       ></b-form-input>
     </div>
-    <div class="row mt-4">
+    <div class="row mt-4 text-center">
       <span class="col-2">任务ID</span>
       <span class="col-1">来源</span>
       <span class="col-1">类型</span>

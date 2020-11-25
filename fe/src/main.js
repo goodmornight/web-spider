@@ -12,6 +12,7 @@ import vco from 'v-click-outside'
 import VueRouter from 'vue-router'
 import VueFeather from 'vue-feather'
 import flatPickr from 'vue-flatpickr-component'
+import request from '@utils/request'
 
 Vue.use(VueFeather)
 Vue.use(flatPickr)
@@ -21,6 +22,9 @@ Vue.use(vco)
 
 // Don't warn about using the dev version of Vue in development.
 Vue.config.productionTip = process.env.NODE_ENV === 'production'
+
+// 全局注册
+Vue.prototype.$request = request
 
 // If running inside Cypress...
 if (process.env.VUE_APP_TEST === 'e2e') {

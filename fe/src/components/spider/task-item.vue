@@ -3,19 +3,19 @@ export default {
   props:{
     taskId: {
       type: String,
-      default: '12345',
+      default: 'c84bdb7bcef14772a797372af92c0ac7',
     },
     domain: {
       type: String,
-      default: 'vimeo',
+      default: 'vimeo.com',
     },
     type: {
       type: String,
-      default: 'video',
+      default: 'Info',
     },
     url: {
       type: String,
-      default: 'https://127.0.0.1',
+      default: 'https://vimeo.com/76979871',
     },
     isCompleted: {
       type: Boolean,
@@ -64,6 +64,7 @@ export default {
   min-width: 0;
   background-color: #fff;
   background-clip: border-box;
+  text-align: center;
   border: 0 solid rgba(0, 0, 0, 0.125);
   box-shadow: 0 0.05rem 0.01rem rgba(75, 75, 90, 0.075);
   border-radius: 0.25rem;
