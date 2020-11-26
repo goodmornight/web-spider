@@ -13,34 +13,107 @@ export default {
   components: { Layout, TaskItem },
   data() {
     return {
-      
+      websock: null,
+      searchData: "",
+      taskData:[{
+        fid:"81d876f01b404ea983012293e4ac6bdc",
+        id: "c84bdb7bcef14772a797372af92c0ac7",
+        url:"https://vimeo.com/76979871",
+        domain:"vimeo",
+        type: "info",
+        create_time: 1606120037,
+        update_time: 1706120037,
+        sub_tasks: {
+          "f15bbd3fa5044dfbb7692bdc15e98e1a": true,
+          "40a676c4bbd544efba9df4472af7a272": false
+        }
+      }]
     }
   },
+  created() {
+    // this.initWebSocket()
+  },
+  destroyed() {
+    // this.websock.close()
+  },
+  methods:{
+    toCreateTasks(){
+
+      const vm = this
+      
+      this.$request.post('tasks', {
+        url: this.searchData
+      })
+      .then((res) => {
+        console.log(res)
+        // 请求成功
+        if(res.data.code === 1){
+          // todo
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+
+    },
+    // 初始化websocket
+    initWebSocket(){
+
+      const wsuri = process.env.VUE_APP_WS_URL + "/tasks"
+      this.websock = new WebSocket(wsuri)
+      this.websock.onmessage = this.websocketonmessage
+      this.websock.onopen = this.websocketonopen
+      this.websock.onerror = this.websocketonerror
+      this.websock.onclose = this.websocketclose
+
+    },
+
+    // 连接建立之后执行send方法发送数据
+    websocketonopen(){ 
+      
+    },
+
+    // 连接建立失败重连
+    websocketonerror(){
+      this.initWebSocket()
+    },
+
+    // 数据接收
+    websocketonmessage(res){
+      if(res.data.code === 1){
+        this.taskData = JSON.parse(res.data.data)
+      }
+    },
+
+    // 数据发送
+    websocketsend(Data){
+      this.websock.send(Data)
+    },
+
+    // 关闭
+    websocketclose(e){
+      console.log('websocket error, ',e)
+    },
+    
+  }
 }
 </script>
 
 <template>
   <Layout>
-    <div class="row mt-2">
+
+    <div class="row mt-2 mb-2 p-2">
       <b-form-input
-        class="col-xl-12 col-lg-12 col-md-12 col-sm-12"
-        value="Some text value..."
+        v-model="searchData"
+        class="col-12"
+        placeholder="Some text value..."
+        type="url"
+        @keyup.enter="toCreateTasks"
       ></b-form-input>
     </div>
-    <div class="row mt-4 text-center">
-      <span class="col-2">任务ID</span>
-      <span class="col-1">来源</span>
-      <span class="col-1">类型</span>
-      <span class="col-2">URL</span>
-      <span class="col-2">状态</span>
-      <span class="col-2">创建时间</span>
-      <span class="col-2">更新时间</span>
-    </div>
+
     <div class="row">
-      <TaskItem />
-      <TaskItem />
-      <TaskItem />
-      <TaskItem />
+      <TaskItem v-for="(task, index) in taskData" :task="task"/>
     </div>
     
   </Layout>

@@ -228,7 +228,7 @@ export default {
 }
 .source {
   /*float: right;*/
-  width: 2rem;
+  width: 1.5rem;
 }
 .content {
   overflow: hidden;

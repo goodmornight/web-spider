@@ -41,15 +41,25 @@ export default {
 			<!-- LOGO -->
 			<a href="/" class="navbar-brand mr-0 mr-md-2 logo">
 				<span class="logo-lg">
+					<!-- <img src="@assets/images/logo.png" alt height="24" /> -->
+					<span class="d-inline h5 ml-2 text-logo">GreenLight</span>
+				</span>
+				<span class="logo-sm">
+					<!-- <img src="@assets/images/logo.png" alt height="24" /> -->
+					<span class="d-inline h5 ml-2 text-logo">GreenLight</span>
+				</span>
+			</a>
+			<!-- <a href="/" class="navbar-brand mr-0 mr-md-2 logo">
+				<span class="logo-lg">
 					<img src="@assets/images/logo.png" alt height="24" />
 					<span class="d-inline h5 ml-2 text-logo">Shreyu</span>
 				</span>
 				<span class="logo-sm">
 					<img src="@assets/images/logo.png" alt height="24" />
 				</span>
-			</a>
+			</a> -->
 
-			<ul
+			<!-- <ul
 				class="navbar-nav bd-navbar-nav flex-row list-unstyled menu-left mb-0"
 			>
 				<li class>
@@ -95,7 +105,7 @@ export default {
 					<b-tooltip target="globe-tooltip" placement="left"
 						>Change language</b-tooltip
 					>
-					<!-- item-->
+
 					<b-dropdown-text href="javascript:void(0);" class="notify-item">
 						<img
 							src="@assets/images/flags/germany.jpg"
@@ -106,7 +116,6 @@ export default {
 						<span class="align-middle">German</span>
 					</b-dropdown-text>
 
-					<!-- item-->
 					<b-dropdown-text href="javascript:void(0);" class="notify-item">
 						<img
 							src="@assets/images/flags/italy.jpg"
@@ -117,7 +126,6 @@ export default {
 						<span class="align-middle">Italian</span>
 					</b-dropdown-text>
 
-					<!-- item-->
 					<b-dropdown-text href="javascript:void(0);" class="notify-item">
 						<img
 							src="@assets/images/flags/spain.jpg"
@@ -128,7 +136,6 @@ export default {
 						<span class="align-middle">Spanish</span>
 					</b-dropdown-text>
 
-					<!-- item-->
 					<b-dropdown-text href="javascript:void(0);" class="notify-item">
 						<img
 							src="@assets/images/flags/russia.jpg"
@@ -155,7 +162,7 @@ export default {
 					<b-tooltip target="bell-notification" placement="left"
 						>8 new unread notifications</b-tooltip
 					>
-					<!-- item-->
+
 					<b-dropdown-text class="noti-title border-bottom pb-2" tag="div">
 						<h5 class="m-0 font-size-16">
 							<span class="float-right">
@@ -167,7 +174,7 @@ export default {
 					</b-dropdown-text>
 
 					<VuePerfectScrollbar v-once class="noti-scroll">
-						<!-- item-->
+
 						<b-dropdown-text
 							href="javascript:void(0);"
 							class="notify-item border-bottom"
@@ -181,7 +188,6 @@ export default {
 							</p>
 						</b-dropdown-text>
 
-						<!-- item-->
 						<b-dropdown-text
 							href="javascript:void(0);"
 							class="notify-item border-bottom"
@@ -199,7 +205,6 @@ export default {
 							</p>
 						</b-dropdown-text>
 
-						<!-- item-->
 						<b-dropdown-text
 							href="javascript:void(0);"
 							class="notify-item border-bottom"
@@ -217,7 +222,6 @@ export default {
 							</p>
 						</b-dropdown-text>
 
-						<!-- item-->
 						<b-dropdown-text
 							href="javascript:void(0);"
 							class="notify-item border-bottom active"
@@ -233,7 +237,6 @@ export default {
 							</p>
 						</b-dropdown-text>
 
-						<!-- item-->
 						<b-dropdown-text
 							href="javascript:void(0);"
 							class="notify-item border-bottom"
@@ -249,7 +252,6 @@ export default {
 							</p>
 						</b-dropdown-text>
 
-						<!-- item-->
 						<b-dropdown-text href="javascript:void(0);" class="notify-item">
 							<div class="notify-icon bg-primary">
 								<i class="uil uil-heart"></i>
@@ -261,7 +263,7 @@ export default {
 							</p>
 						</b-dropdown-text>
 					</VuePerfectScrollbar>
-					<!-- All-->
+
 					<b-dropdown-text
 						href="javascript:void(0);"
 						class="text-center text-primary notify-item notify-all border-top"
@@ -347,7 +349,7 @@ export default {
 						<span>Logout</span>
 					</b-dropdown-item>
 				</b-nav-item-dropdown>
-			</ul>
+			</ul> -->
 		</div>
 	</div>
 	<!-- end Topbar -->

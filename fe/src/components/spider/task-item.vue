@@ -1,82 +1,171 @@
 <script>
+import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 export default {
+  components: {
+    VuePerfectScrollbar
+  },
   props:{
-    taskId: {
-      type: String,
-      default: 'c84bdb7bcef14772a797372af92c0ac7',
-    },
-    domain: {
-      type: String,
-      default: 'vimeo.com',
-    },
-    type: {
-      type: String,
-      default: 'Info',
-    },
-    url: {
-      type: String,
-      default: 'https://vimeo.com/76979871',
-    },
-    isCompleted: {
-      type: Boolean,
-      default: false,
-    },
-    createTime: {
-      type: Number,
-      default: 1606120037,
-    },
-    updateTime: {
-      type: Number,
-      default: 1706120037,
-    },
+    task:{
+      type: Object,
+      default: () => ({
+        fid:"81d876f01b404ea983012293e4ac6bdc",
+        id: "c84bdb7bcef14772a797372af92c0ac7",
+        url:"https://vimeo.com/76979871",
+        domain:"vimeo",
+        type: "info",
+        create_time: 1606120037,
+        update_time: 1706120037,
+        sub_tasks: {
+          "f15bbd3fa5044dfbb7692bdc15e98e1a": true,
+          "40a676c4bbd544efba9df4472af7a272": false
+        }
+      }),
+    }
+  },
+  data(){
+    return {
+      ...this.task,
+      icons:{
+        'youtube': require('@assets/images/brands/youtube.svg'),
+        'twitter': require('@assets/images/brands/twitter.svg'),
+        'vimeo': require('@assets/images/brands/vimeo.svg'),
+        'flickr': require('@assets/images/brands/flickr.svg'),
+        'clyp.it': require('@assets/images/brands/clyp.it.svg'),
+      },
+      settings: {
+        maxScrollbarLength: 60
+      },
+    }
   }
 }
 </script>
 <template>
-  <div class="task-item col-12">
-    <div class="col-2">{{ taskId }}</div>
-    <div class="col-1">{{ domain }}</div>
-    <div class="col-1">{{ type }}</div>
-    <div class="col-2">{{ url }}</div>
-    <!-- <div class="col-2">
-      <span class="badge"
-      :class="{
-        'badge-soft-success': isCompleted,
-        'badge-soft-warning': !isCompleted
-      }"
-      >
-        {{ isCompleted ? '完成' : '未完成' }}
-      </span>
-    </div> -->
-    <div class="col-2 time">
-      {{ createTime | moment('YY/MM/DD HH:mm:ss') }}
-    </div>
-    <div class="col-2 time">
-      {{ updateTime | moment('YY/MM/DD HH:mm:ss') }}
-    </div>
-    <div class="row">
-      <div>
+  <div class="col-xl-4 col-lg-6 pl-2 pr-2">
+    <div class="card">
+      <!-- 主任务 -->
+      <div class="card-body pb-1">
+        <div class="badge float-right text-uppercase"
+        :class="{
+          'badge-soft-warning':
+            `${type}` === 'list',
+          'badge-soft-info':
+            `${type}` === 'info',
+          'badge-soft-success':
+            `${type}` === 'file',
+        }"
+        >
+          {{ type }}
+        </div>
+        <p class="text-success font-size-13 mb-2">
+          {{ id }}
+        </p>
+        <div class="row">
+
+          <div class="col-xl-6 col-lg-8 col-md-8 col-sm-10 col-xs-10">
+            <span class="url font-size-18 mr-2">
+              <a :href="task.url" target="_blank">{{ url }}</a>
+            </span>
+            <p v-if="fid!==''" class="text-muted font-size-12 m-0">from <span class="text-info">{{ fid }}</span></p>
+          </div>
+
+          <div class="col-xl-6 col-lg-4 col-md-4 col-sm-2 col-xs-2">
+            <img class="source" :src="icons[domain]" />
+          </div>
+
+        </div>
         
+        <div class="row mb-2">
+
+          <div class="col-6">
+            <!-- 创建时间 -->
+            <p class="mt-2 mb-1 text-muted">Created Time</p>
+            <div class="media">
+              <i class="uil uil-schedule font-18 text-success mr-1"></i>
+              <div class="media-body">
+                <span class="mt-1 font-size-14 time">{{ create_time | moment('YY/MM/DD HH:mm:ss') }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <!-- 更新时间 -->
+            <p class="mt-2 mb-1 text-muted">Upated Time</p>
+            <div class="media">
+              <i class="uil uil-schedule font-18 text-success mr-1"></i>
+              <div class="media-body">
+                <span class="mt-1 font-size-14 time">{{ update_time | moment('YY/MM/DD HH:mm:ss') }}</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
+      <!-- 子任务 -->
+      <div class="card-body border-top">
+        <VuePerfectScrollbar class="scroll-area" :setting="settings">
+          <div
+            v-for="(isSubTaskCompleted, subTaskId) in sub_tasks"
+            :key="subTaskId"
+            class="card mb-2 shadow-none border"
+          >
+            <div class="p-1 px-2">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <div class="avatar-sm font-weight-bold mr-3">
+                    <span
+                      class="avatar-title rounded bg-soft-primary text-primary"
+                    >
+                      <i class="uil-file-plus-alt font-size-18"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="col pl-0">
+                  <a
+                    href="javascript:void(0);"
+                    class="text-muted"
+                    >{{ subTaskId }}</a
+                  >
+                </div>
+                <div class="col-auto">
+                  <span class="badge"
+                    :class="{
+                      'badge-soft-success': isSubTaskCompleted,
+                      'badge-soft-warning': !isSubTaskCompleted
+                    }"
+                  >
+                    {{ isSubTaskCompleted ? 'completed' : 'loading' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </VuePerfectScrollbar>
+      </div>
+
     </div>
-  </div>	
+  </div>
 </template>
 <style type="text/css">
-.task-item {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  min-width: 0;
-  background-color: #fff;
-  background-clip: border-box;
-  text-align: center;
-  border: 0 solid rgba(0, 0, 0, 0.125);
-  box-shadow: 0 0.05rem 0.01rem rgba(75, 75, 90, 0.075);
-  border-radius: 0.25rem;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
+.overflow-text {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 .time {
   color: #43d39e;
+}
+.url {
+  color: #5369f8;
+}
+.source {
+  /*float: right;*/
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.scroll-area {
+  position: relative;
+  margin: auto;
+  width: 100%;
+  max-height: 105px;
 }
 </style>

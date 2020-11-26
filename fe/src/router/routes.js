@@ -466,13 +466,13 @@ const SearchRoutes = [
 ]
 
 const authProtectedRoutes = [
-  ...dashboardRoutes,
-  ...appsRoutes,
-  ...pagesRoutes,
-  ...uiRoutes,
-  ...formsRoutes,
-  ...chartsRoutes,
-  ...tablesRoutes,
+  // ...dashboardRoutes,
+  // ...appsRoutes,
+  // ...pagesRoutes,
+  // ...uiRoutes,
+  // ...formsRoutes,
+  // ...chartsRoutes,
+  // ...tablesRoutes,
   ...tasksRoutes,
   ...SearchRoutes
 ]
