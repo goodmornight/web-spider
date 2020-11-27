@@ -39,14 +39,15 @@ export default {
 	<div class="navbar navbar-expand flex-column flex-md-row navbar-custom">
 		<div class="container-fluid">
 			<!-- LOGO -->
-			<a href="/" class="navbar-brand mr-0 mr-md-2 logo">
+			<!-- <a href="/" class="navbar-brand mr-0 mr-md-2 logo"> -->
+			<a href="/" class="navbar-brand mr-0 mr-md-2">
 				<span class="logo-lg">
 					<!-- <img src="@assets/images/logo.png" alt height="24" /> -->
 					<span class="d-inline h5 ml-2 text-logo">GreenLight</span>
 				</span>
 				<span class="logo-sm">
 					<!-- <img src="@assets/images/logo.png" alt height="24" /> -->
-					<span class="d-inline h5 ml-2 text-logo">GreenLight</span>
+					<!-- <span class="d-inline h5 ml-2 text-logo">GreenLight</span> -->
 				</span>
 			</a>
 			<!-- <a href="/" class="navbar-brand mr-0 mr-md-2 logo">
@@ -72,12 +73,32 @@ export default {
 						<feather type="x" class="close-icon"></feather>
 					</button>
 				</li>
-			</ul>
+			</ul> -->
+
+			<ul
+        class="navbar-nav bd-navbar-nav flex-row list-unstyled menu-left mb-0"
+      >
+        <li class>
+          <!-- <button
+            class="button-menu-mobile open-left disable-btn"
+            :class="{ open: isMenuOpened }"
+            @click="toggleMenu"
+          > -->
+          <button
+            class="button-menu-mobile open-left"
+            :class="{ open: isMenuOpened }"
+            @click="toggleMenu"
+          >
+            <feather type="menu" class="menu-icon align-middle"></feather>
+            <feather type="x" class="close-icon"></feather>
+          </button>
+        </li>
+      </ul>
 
 			<ul
 				class="navbar-nav flex-row ml-auto d-flex list-unstyled topnav-menu float-right mb-0"
 			>
-				<li class="d-none d-sm-block">
+				<!-- <li class="d-none d-sm-block">
 					<div class="app-search">
 						<form>
 							<div class="input-group">
@@ -288,7 +309,7 @@ export default {
 					<b-tooltip target="setting-tooltip" placement="left"
 						>Settings</b-tooltip
 					>
-				</li>
+				</li> -->
 
 				<b-nav-item-dropdown
 					right
@@ -304,10 +325,14 @@ export default {
 							/>
 							<div class="media-body text-left">
 								<h6 class="pro-user-name ml-2 my-0">
-									<span>{{ user.name }}</span>
-									<span class="pro-user-desc text-muted d-block mt-1"
-										>Administrator</span
-									>
+									<!-- <span>{{ user.name }}</span> -->
+									<span>{{ user.username }}</span>
+									<!-- <span class="pro-user-desc text-muted d-block mt-1">
+										Administrator
+									</span> -->
+									<span class="pro-user-desc text-muted d-block mt-1">
+										{{ user.email }}
+									</span>
 								</h6>
 							</div>
 							<feather
@@ -316,7 +341,7 @@ export default {
 							></feather>
 						</div>
 					</template>
-					<b-dropdown-item href="/pages/profile" class="notify-item p-0">
+					<!-- <b-dropdown-item href="/pages/profile" class="notify-item p-0">
 						<feather type="user" class="icon-dual icon-xs mr-2"></feather>
 						<span>My Account</span>
 					</b-dropdown-item>
@@ -342,14 +367,14 @@ export default {
 						<span>Lock Screen</span>
 					</b-dropdown-item>
 
-					<b-dropdown-divider></b-dropdown-divider>
+					<b-dropdown-divider></b-dropdown-divider> -->
 
 					<b-dropdown-item href="/logout" class="notify-item p-0">
 						<feather type="log-out" class="icon-dual icon-xs mr-2"></feather>
 						<span>Logout</span>
 					</b-dropdown-item>
 				</b-nav-item-dropdown>
-			</ul> -->
+			</ul>
 		</div>
 	</div>
 	<!-- end Topbar -->

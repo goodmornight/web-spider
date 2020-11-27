@@ -112,6 +112,7 @@ export default {
     // })
   },
   mounted() {
+    // this.$store.commit('layout/CHANGE_LEFT_SIDEBAR_TYPE', 'condensed')
     window.addEventListener('scroll', this.handleScroll)
     this.getMediaData()
     this.getChartData()
@@ -146,7 +147,7 @@ export default {
 
       const vm = this
       
-      this.$request.post('query?', q)
+      this.$request.post('querys?', q)
       .then((res) => {
         console.log(res)
         
@@ -164,7 +165,7 @@ export default {
 
       const vm = this
       
-      this.$request.post('query?', q)
+      this.$request.post('querys?', q)
       .then((res) => {
         console.log(res)
         
@@ -193,9 +194,9 @@ export default {
       //文档内容实际高度（包括超出视窗的溢出部分）
       let scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight)
 
-      console.log('scrollTop = ' + scrollTop)
-      console.log('clientHeight = ' + clientHeight)
-      console.log('scrollHeight = ' + scrollHeight)
+      // console.log('scrollTop = ' + scrollTop)
+      // console.log('clientHeight = ' + clientHeight)
+      // console.log('scrollHeight = ' + scrollHeight)
 
       if (scrollTop + clientHeight + 5 >= scrollHeight) {
         console.log('已滚至底部')
@@ -211,9 +212,9 @@ export default {
 <template>
   <Layout>
 
-    <div class="row justify-content-md-center m-0 mt-2 mb-2">
+    <div class="row justify-content-md-center m-0 mt-3 mb-3">
       <!-- 类型选择 -->
-      <div class="col-1 pl-0 pr-2">
+      <div class="col-1 pl-0 pr-3">
         <select class="form-control custom-select" v-model="type">
           <option>video</option>
           <option>audio</option>
@@ -221,7 +222,7 @@ export default {
         </select>
       </div>
       <!-- ES搜索 -->
-      <div class="col-10 pl-0 pr-2">
+      <div class="col-10 pl-0 pr-3">
         <b-form-input
           placeholder="e.g. mime:video/mp4 AND title:kitty AND platform:youtube"
           v-model="query"
@@ -238,7 +239,7 @@ export default {
       </div>
     </div>
     <!-- 图表 -->
-    <div class="row p-0 m-0 mb-2">
+    <div class="row p-0 m-0 mb-3">
       <div class="col-12 p-0 m-0">
         <div class="card mb-0">
           <div class="card-body pb-0">

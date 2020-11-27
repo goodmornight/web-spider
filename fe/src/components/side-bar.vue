@@ -11,7 +11,7 @@ export default {
 	props: {
 		isCondensed: {
 			type: Boolean,
-			default: false,
+			default: true,
 		},
 		theme: {
 			type: String,
@@ -83,6 +83,14 @@ export default {
 			}
 		},
 	},
+	methods: {
+    // 退出登录
+    logout () {
+      // this.$store.commit('auth/SET_CURRENT_USER', null)
+      this.$keycloak.logoutFn()
+
+    }
+  },
 }
 </script>
 
@@ -102,15 +110,17 @@ export default {
 			/>
 
 			<div class="media-body">
-				<h6 class="pro-user-name mt-0 mb-0">{{ user.name }}</h6>
-				<span class="pro-user-desc">Administrator</span>
+				<!-- <h6 class="pro-user-name mt-0 mb-0">{{ user.name }}</h6>
+				<span class="pro-user-desc">Administrator</span> -->
+				<h6 class="pro-user-name mt-0 mb-0" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{ user.username }}</h6>
+				<span class="pro-user-desc" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-transform: none;">{{ user.email }}</span>
 			</div>
 			<b-dropdown variant="black" class="align-self-center" toggle-class="p-0">
 				<template v-slot:button-content>
 					<feather type="chevron-down" class="align-middle"></feather>
 				</template>
 
-				<b-dropdown-item href="/pages/profile" class="notify-item">
+				<!-- <b-dropdown-item href="/pages/profile" class="notify-item">
 					<feather
 						type="user"
 						class="icon-dual icon-xs mr-2 align-middle"
@@ -142,9 +152,10 @@ export default {
 					<span>Lock Screen</span>
 				</b-dropdown-item>
 
-				<b-dropdown-divider></b-dropdown-divider>
+				<b-dropdown-divider></b-dropdown-divider> -->
 
-				<b-dropdown-item href="/logout" class="notify-item">
+				<!-- <b-dropdown-item href="/logout" class="notify-item"> -->
+				<b-dropdown-item @click="logout" class="notify-item">
 					<feather
 						type="log-out"
 						class="icon-dual icon-xs mr-2 align-middle"

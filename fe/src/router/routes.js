@@ -446,7 +446,7 @@ const chartsRoutes = [
 
 const tasksRoutes = [
   {
-    path: '/tasksController',
+    path: '/',
     name: 'Tasks',
     icon: 'bookmark',
     component: () => lazyLoadView(import('@views/pages/spider/tasks-controller')),

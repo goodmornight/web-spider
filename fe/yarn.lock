@@ -1415,6 +1415,13 @@
     debug "^3.1.0"
     lodash.once "^4.1.1"
 
+"@dsb-norge/vue-keycloak-js@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@dsb-norge/vue-keycloak-js/-/vue-keycloak-js-1.3.1.tgz#9406fc5684e380942a94752b18926e8f518bb6e6"
+  integrity sha512-oi2QfRxclSeMPYD/UOLQHar90VN0N06HpmzdjhYYFqb6xdiesazUR9qAETZAAL+dFWB/1lpIogbaMK0KM1pbUg==
+  dependencies:
+    keycloak-js "9.0.3"
+
 "@fullcalendar/bootstrap@^4.3.0":
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/@fullcalendar/bootstrap/-/bootstrap-4.3.0.tgz#c989968f92c4ec26a0ff7dfc35b186aa38978ba1"
@@ -3086,7 +3093,7 @@ balanced-match@^1.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
   integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
 
-base64-js@^1.0.2:
+base64-js@1.3.1, base64-js@^1.0.2:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.3.1.tgz#58ece8cb75dd07e71ed08c736abc5fac4dbf8df1"
   integrity sha512-mLQ4i2QO1ytvGWFWmcngKO//JXAQueZvwEKtjgQFM4jIK0kU+ytMfplL8j+n5mspOfjHwoAg+9yhb7BwAHm36g==
@@ -8887,6 +8894,11 @@ js-queue@2.0.0:
   dependencies:
     easy-stack "^1.0.0"
 
+js-sha256@0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/js-sha256/-/js-sha256-0.9.0.tgz#0b89ac166583e91ef9123644bd3c5334ce9d0966"
+  integrity sha512-sga3MHh9sgQN2+pJ9VYZ+1LPwXOxuBJBA5nrR5/ofPfuiJBE2hnjsaN8se8JznOmGLN2p49Pe5U/ttafcs/apA==
+
 js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
@@ -9040,6 +9052,14 @@ jsprim@^1.2.2:
     extsprintf "1.3.0"
     json-schema "0.2.3"
     verror "1.10.0"
+
+keycloak-js@9.0.3:
+  version "9.0.3"
+  resolved "https://registry.yarnpkg.com/keycloak-js/-/keycloak-js-9.0.3.tgz#cb63412df13c7c6390df5b902555866e659b24b4"
+  integrity sha512-c8FFPa8YiJmPbJEMZ/mIrHflBR6FIFUm5xTWtIDzlrnoeF4u0wDmTBfo1u71rWIL1HanLvg3T+9AgR1NqfmGbA==
+  dependencies:
+    base64-js "1.3.1"
+    js-sha256 "0.9.0"
 
 keycode@^2.2.0:
   version "2.2.0"

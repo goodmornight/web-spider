@@ -9,6 +9,9 @@ export default {
       return title ? `${title} | ${appConfig.title}` : appConfig.title
     },
   },
+  mounted() {
+    document.body.classList.add('left-side-menu-condensed')
+  }
 }
 </script>
 

@@ -78,14 +78,20 @@ export default {
           src: this.url,
         }],
         poster: this.thumbnail_url,
-        notSupportedMessage: '此视频暂无法播放，请稍后再试',
+        notSupportedMessage: 'Media Error',
       }
     }
   },
   methods: {
     // 显示Modal
-    showModal(){
+    showModal() {
+      console.log(this.url)
       this.$refs.modal.show()
+    },
+    // 显示图片
+    showImgModal() {
+      if(this.type!=='image') return
+      this.$refs.imgModal.show()
     }
   }
 }
@@ -94,13 +100,14 @@ export default {
 <div class="col-xl-2 col-lg-3 col-md-6 col-sm-12">
   <div class="media-card">
     <!-- 卡片头部信息 -->
-    <div class="media-card-top">
+    <div class="media-card-top" @click="showImgModal">
       <b-img
         :src="`${ thumbnail_url === ''? defaultThumbnail : thumbnail_url }`"
         :alt="file_name"
         fluid
       ></b-img>
       <i v-if="type!=='image'" variant="warning" class="uil uil-play" @click="showModal"></i>
+      <!-- <i v-else variant="warning" class="uil uil-image" @click="showImageModal"></i> -->
     </div>
     
     <div class="position-relative">
@@ -157,6 +164,24 @@ export default {
       :options="playerOptions"
       :playsinline="true" />
     </b-modal>
+
+    <b-modal
+      ref="imgModal"
+      centered
+      size="lg"
+      :title="file_name"
+      title-class="font-18"
+      header-class="d-none"
+      content-class="border-0"
+      body-class="p-0"
+      hide-footer
+    >
+      <b-img
+        :src="`${ thumbnail_url === ''? defaultThumbnail : thumbnail_url }`"
+        :alt="file_name"
+        fluid
+      ></b-img>
+    </b-modal>
     
   </div>
 </div>
@@ -172,7 +197,7 @@ export default {
   border: 0 solid rgba(0, 0, 0, 0.125);
   box-shadow: 0 0.05rem 0.01rem rgba(75, 75, 90, 0.075);
   border-radius: 0.25rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 .media-card-top {
   position: relative;
@@ -191,9 +216,12 @@ export default {
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
-  color: #fff;
+  color: rgba(255, 255, 255, 0.6);
   font-size: 3.5rem;
   border-style: none;
+}
+.media-card-top i:hover {
+  color: rgba(255, 255, 255, 1);
 }
 .media-title{
   font-size: 18px;
@@ -243,7 +271,6 @@ export default {
   display: flex;
   max-width: 100%;
   margin: 0.3rem 1rem 0.8rem 1rem;
-  /*margin-top: 0;*/
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
