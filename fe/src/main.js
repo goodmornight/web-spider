@@ -14,7 +14,14 @@ import VueFeather from 'vue-feather'
 import flatPickr from 'vue-flatpickr-component'
 import request from '@utils/request'
 import VueKeyCloak from '@dsb-norge/vue-keycloak-js'
+import _ from 'lodash'
+import VueNoty from 'vuejs-noty'
 
+import 'vuejs-noty/dist/vuejs-noty.css'
+
+Vue.use(VueNoty, {
+  timeout: 4000,
+})
 Vue.use(VueFeather)
 Vue.use(flatPickr)
 
@@ -26,6 +33,7 @@ Vue.config.productionTip = process.env.NODE_ENV === 'production'
 
 // 全局注册
 Vue.prototype.$request = request
+Vue.prototype.$_ = _
 
 // If running inside Cypress...
 if (process.env.VUE_APP_TEST === 'e2e') {

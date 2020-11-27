@@ -7,19 +7,20 @@ export default {
   props:{
     task:{
       type: Object,
-      default: () => ({
-        fid:"81d876f01b404ea983012293e4ac6bdc",
-        id: "c84bdb7bcef14772a797372af92c0ac7",
-        url:"https://vimeo.com/76979871",
-        domain:"vimeo",
-        type: "info",
-        create_time: 1606120037,
-        update_time: 1706120037,
-        sub_tasks: {
-          "f15bbd3fa5044dfbb7692bdc15e98e1a": true,
-          "40a676c4bbd544efba9df4472af7a272": false
-        }
-      }),
+      default: () => ({}),
+      // default: () => ({
+      //   fid:"81d876f01b404ea983012293e4ac6bdc",
+      //   id: "c84bdb7bcef14772a797372af92c0ac7",
+      //   url:"https://vimeo.com/76979871",
+      //   domain:"vimeo",
+      //   type: "info",
+      //   create_time: 1606120037,
+      //   update_time: 1706120037,
+      //   sub_tasks: {
+      //     "f15bbd3fa5044dfbb7692bdc15e98e1a": true,
+      //     "40a676c4bbd544efba9df4472af7a272": false
+      //   }
+      // }),
     }
   },
   data(){
@@ -51,17 +52,17 @@ export default {
           'badge-soft-info':
             `${type}` === 'info',
           'badge-soft-success':
-            `${type}` === 'file',
+            `${type}` === 'media',
         }"
         >
           {{ type }}
         </div>
-        <p class="text-success font-size-13 mb-2">
+        <p class="text-success font-size-13 mb-2 overflow-text">
           {{ id }}
         </p>
         <div class="row">
 
-          <div class="col-xl-6 col-lg-8 col-md-8 col-sm-10 col-xs-10">
+          <div class="col-xl-6 col-lg-8 col-md-8 col-sm-10 col-xs-10 overflow-text">
             <span class="url font-size-18 mr-2">
               <a :href="task.url" target="_blank">{{ url }}</a>
             </span>
@@ -78,10 +79,10 @@ export default {
 
           <div class="col-6">
             <!-- 创建时间 -->
-            <p class="mt-2 mb-1 text-muted">Created Time</p>
+            <p class="mt-2 mb-1 text-muted overflow-text">Created Time</p>
             <div class="media">
               <i class="uil uil-schedule font-18 text-success mr-1"></i>
-              <div class="media-body">
+              <div class="media-body overflow-text">
                 <span class="mt-1 font-size-14 time">{{ create_time | moment('YY/MM/DD HH:mm:ss') }}</span>
               </div>
             </div>
@@ -89,10 +90,10 @@ export default {
 
           <div class="col-6">
             <!-- 更新时间 -->
-            <p class="mt-2 mb-1 text-muted">Upated Time</p>
+            <p class="mt-2 mb-1 text-muted overflow-text">Upated Time</p>
             <div class="media">
               <i class="uil uil-schedule font-18 text-success mr-1"></i>
-              <div class="media-body">
+              <div class="media-body overflow-text">
                 <span class="mt-1 font-size-14 time">{{ update_time | moment('YY/MM/DD HH:mm:ss') }}</span>
               </div>
             </div>
@@ -102,7 +103,7 @@ export default {
       </div>
       <!-- 子任务 -->
       <div class="card-body border-top">
-        <VuePerfectScrollbar class="scroll-area" :setting="settings">
+        <VuePerfectScrollbar v-if="!this.$_.isEmpty(sub_tasks)" class="scroll-area" :setting="settings">
           <div
             v-for="(isSubTaskCompleted, subTaskId) in sub_tasks"
             :key="subTaskId"
@@ -119,7 +120,7 @@ export default {
                     </span>
                   </div>
                 </div>
-                <div class="col pl-0">
+                <div class="col pl-0 overflow-text">
                   <a
                     href="javascript:void(0);"
                     class="text-muted"
@@ -140,6 +141,9 @@ export default {
             </div>
           </div>
         </VuePerfectScrollbar>
+        <div v-else>
+          <span class="text-muted"> Sub-task is null.</span>
+        </div>
       </div>
 
     </div>

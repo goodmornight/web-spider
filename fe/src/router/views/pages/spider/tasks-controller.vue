@@ -1,5 +1,4 @@
 <script>
-import appConfig from '@src/app.config'
 import Layout from '@layouts/main'
 import TaskItem from '@components/spider/task-item'
 
@@ -15,44 +14,49 @@ export default {
     return {
       websock: null,
       searchData: "",
-      taskData:[{
-        fid:"81d876f01b404ea983012293e4ac6bdc",
-        id: "c84bdb7bcef14772a797372af92c0ac7",
-        url:"https://vimeo.com/76979871",
-        domain:"vimeo",
-        type: "info",
-        create_time: 1606120037,
-        update_time: 1706120037,
-        sub_tasks: {
-          "f15bbd3fa5044dfbb7692bdc15e98e1a": true,
-          "40a676c4bbd544efba9df4472af7a272": false
-        }
-      }]
+      taskData:[]
+      // taskData:[{
+      //   fid:"81d876f01b404ea983012293e4ac6bdc",
+      //   id: "c84bdb7bcef14772a797372af92c0ac7",
+      //   url:"https://vimeo.com/76979871",
+      //   domain:"vimeo",
+      //   type: "info",
+      //   create_time: 1606120037,
+      //   update_time: 1706120037,
+      //   sub_tasks: {
+      //     "f15bbd3fa5044dfbb7692bdc15e98e1a": true,
+      //     "40a676c4bbd544efba9df4472af7a272": false
+      //   }
+      // }]
     }
   },
   created() {
-    // this.initWebSocket()
+    this.initWebSocket()
   },
   destroyed() {
-    // this.websock.close()
+    this.websock.close()
   },
   methods:{
     toCreateTasks(){
 
       const vm = this
       
-      this.$request.post('tasks', {
+      this.$request.post('/task', {
         url: this.searchData
       })
       .then((res) => {
         console.log(res)
         // 请求成功
         if(res.data.code === 1){
-          // todo
+          console.log('添加成功')
+          vm.$noty.success(res.data.msg)
+        }else{
+          vm.$noty.warning(res.data.msg)
         }
       })
       .catch((err) => {
         console.log(err)
+        vm.$noty.error(err)
       })
 
     },
@@ -80,8 +84,11 @@ export default {
 
     // 数据接收
     websocketonmessage(res){
-      if(res.data.code === 1){
-        this.taskData = JSON.parse(res.data.data)
+      console.log(res)
+      const message = JSON.parse(res.data)
+      console.log(message)
+      if(message.code === 1){
+        this.taskData = message.data
       }
     },
 

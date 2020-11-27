@@ -30,7 +30,8 @@ export default {
   data(){
     return {
       ...this.media,
-      defaultThumbnail: 'https://picsum.photos/900/600/?image=41',
+      // defaultThumbnail: 'https://picsum.photos/900/600/?image=41',
+      defaultThumbnail: require('@assets/images/music.jpg'),
       icons:{
         'youtube': require('@assets/images/brands/youtube.svg'),
         'twitter': require('@assets/images/brands/twitter.svg'),
@@ -80,6 +81,9 @@ export default {
         poster: this.thumbnail_url,
         notSupportedMessage: 'Media Error',
       }
+    },
+    fileSizeMB() {
+      return this.file_size.toPrecision(3) + ' MB'
     }
   },
   methods: {
@@ -97,8 +101,8 @@ export default {
 }
 </script>
 <template>
-<div class="col-xl-2 col-lg-3 col-md-6 col-sm-12">
-  <div class="media-card">
+<div class="col-xl-2 col-lg-3 col-md-6 col-sm-12 mb-4">
+  <div class="media-card mb-0">
     <!-- 卡片头部信息 -->
     <div class="media-card-top" @click="showImgModal">
       <b-img
@@ -107,7 +111,6 @@ export default {
         fluid
       ></b-img>
       <i v-if="type!=='image'" variant="warning" class="uil uil-play" @click="showModal"></i>
-      <!-- <i v-else variant="warning" class="uil uil-image" @click="showImageModal"></i> -->
     </div>
     
     <div class="position-relative">
@@ -130,12 +133,14 @@ export default {
           {{ content }}
         </p>
       </div>
+
       <!-- 卡片底部文件类型和版权信息 -->
       <div class="media-card-footer">
         <span class="fileType">{{ mime }}</span>
         <span class="fileSize">
           <i class="uil uil-down-arrow"></i>
-          {{ file_size | gbFilter }}
+          <!-- {{ file_size | gbFilter }} -->
+          {{ fileSizeMB}}
         </span>
         <span v-show="isEncrypted" class="ml-auto encrypted">
           Encrypted data detected
@@ -210,6 +215,8 @@ export default {
   vertical-align: middle;
   border-top-left-radius: 0.25rem;
   border-top-right-radius: 0.25rem;
+/*  width: 900px;
+  height: 600px;*/
 }
 .media-card-top i {
   position: absolute;
@@ -259,12 +266,15 @@ export default {
   width: 1.5rem;
 }
 .content {
-  overflow: hidden;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  /*overflow: hidden;
   text-overflow: ellipsis;
   display:-webkit-box;
   -webkit-box-orient:vertical;
   -webkit-line-clamp:2;
-  margin-bottom: 0;
+  margin-bottom: 0;*/
 }
 
 .media-card-footer {

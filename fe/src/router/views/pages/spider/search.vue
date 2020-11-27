@@ -32,23 +32,6 @@ export default {
         }
       },
       dateTime: null,
-      series: [{
-        name: '下载量',
-        data: [
-          [1486684800000, 34],
-          [1486771200000, 43],
-          [1486857600000, 31], 
-          [1486944000000, 43], 
-          [1487030400000, 33], 
-          [1487116800000, 52],
-          [1496684800000, 34],
-          [1496771200000, 43],
-          [1496857600000, 31],
-          [1496944000000, 43],
-          [1497030400000, 33],
-          [1497116800000, 52],
-        ]
-      }],
       chartOptions: {
         chart: {
           type: 'bar',
@@ -63,7 +46,7 @@ export default {
           bar: {
             horizontal: false,
             columnWidth: '55%',
-            endingShape: 'rounded'
+            // endingShape: 'rounded'
           },
         },
         dataLabels: {
@@ -100,11 +83,17 @@ export default {
           show: false,
         },
       },
-      mediaData:[]
+      mediaData:[],
+      chartData:[]
     }
   },
   computed:{
-    
+    series() {
+      return [{
+        name: 'Download',
+        data: this.chartData
+      }]
+    }
   },
   created() {
     // this.$nextTick(() => {
@@ -123,19 +112,21 @@ export default {
   methods: {
     getMediaData() {
       this.isMediaLoading = true
-      this.fetchMediaData(this.queryData(false))
+      // this.fetchMediaData(this.queryData(false))
+      this.fetchMediaData()
     },
     getChartData() {
       this.isChartLoading = true
-      this.fetchChartData(this.queryData(true))
+      // this.fetchChartData(this.queryData(true))
+      this.fetchChartData()
     },
     // 格式化请求数据
     queryData(stat) {
       let q = {
         type: this.type || '',
         q: this.query || '',
-        st: this.st,
-        et: this.et,
+        st: parseInt(this.st/1000),
+        et: parseInt(this.et/1000),
         size: this.size,
         from: this.from,
         only_stat: stat
@@ -143,17 +134,31 @@ export default {
       return queryString.stringify(q)
     },
     // 请求媒体数据
-    fetchMediaData(q) {
+    fetchMediaData() {
 
       const vm = this
-      
-      this.$request.post('querys?', q)
+
+      let query = {
+        type: this.type || '',
+        q: this.query || '',
+        st: parseInt(this.st/1000),
+        et: parseInt(this.et/1000),
+        size: this.size,
+        from: this.from,
+      }
+
+      console.log(query)
+      this.$request.post('/query?' + queryString.stringify(query))
       .then((res) => {
         console.log(res)
         
         if(res.data.code === 1){
           vm.isMediaLoading = false
+          vm.$noty.success(res.data.msg)
           vm.mediaData.push(...res.data.data)
+        }else{
+          vm.mediaData = []
+          vm.$noty.warning(res.data.msg)
         }
       })
       .catch((err) => {
@@ -161,16 +166,28 @@ export default {
       })     
       
     },
-    fetchChartData(q) {
+    fetchChartData() {
 
       const vm = this
-      
-      this.$request.post('querys?', q)
+
+      let query = {
+        type: this.type || '',
+        q: this.query || '',
+        st: parseInt(this.st/1000),
+        et: parseInt(this.et/1000),
+        only_stat: true
+      }
+
+      console.log(query)
+      this.$request.post('/querys?' + queryString.stringify(query))
       .then((res) => {
         console.log(res)
         
         if(res.data.code === 1){
           vm.isChartLoading = false
+          vm.chartData = res.data.data
+        }else{
+
         }
       })
       .catch((err) => {
@@ -203,7 +220,12 @@ export default {
         this.from = this.from + this.size
         this.getMediaData()
       }
-    },    
+    }, 
+    toSearch() {
+      this.mediaData = []
+      this.getMediaData()
+      this.getChartData()
+    }  
   },
 
 }
@@ -211,7 +233,6 @@ export default {
 
 <template>
   <Layout>
-
     <div class="row justify-content-md-center m-0 mt-3 mb-3">
       <!-- 类型选择 -->
       <div class="col-1 pl-0 pr-3">
@@ -226,6 +247,7 @@ export default {
         <b-form-input
           placeholder="e.g. mime:video/mp4 AND title:kitty AND platform:youtube"
           v-model="query"
+          @keyup.enter="toSearch"
         ></b-form-input>
       </div>  
       <!-- 时间选择 -->
@@ -239,7 +261,7 @@ export default {
       </div>
     </div>
     <!-- 图表 -->
-    <div class="row p-0 m-0 mb-3">
+    <div class="row p-0 m-0 mb-4">
       <div class="col-12 p-0 m-0">
         <div class="card mb-0">
           <div class="card-body pb-0">
@@ -253,7 +275,7 @@ export default {
     </div>
     <!-- 媒体列表 -->
     <div class="row">
-      <MediaCard v-for="(media, index) in mediaData" :media="media" />
+      <MediaCard v-for="(media, index) in mediaData" :media="media._source" />
     </div>
     <div class="row">
       <b-spinner v-show="isMediaLoading" label="Loading..." variant="primary" class="mx-auto"></b-spinner>
