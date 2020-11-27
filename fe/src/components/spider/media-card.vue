@@ -101,29 +101,29 @@ export default {
 }
 </script>
 <template>
-<div class="col-xl-2 col-lg-3 col-md-6 col-sm-12 mb-4">
+<div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-4">
   <div class="media-card mb-0">
     <!-- 卡片头部信息 -->
     <div class="media-card-top" @click="showImgModal">
-      <b-img
+      <b-img-lazy
         :src="`${ thumbnail_url === ''? defaultThumbnail : thumbnail_url }`"
         :alt="file_name"
         fluid
-      ></b-img>
+      ></b-img-lazy>
       <i v-if="type!=='image'" variant="warning" class="uil uil-play" @click="showModal"></i>
     </div>
     
     <div class="position-relative">
       <!-- 卡片中间用户/来源等信息 -->
       <div class="media-card-body">
-        <h5 class="media-title">{{ title }}</h5>
+        <h5 class="media-title overflow-text">{{ title }}</h5>
         <div class="d-flex flex-row align-self-center">
           <img
             class="avatar-sm rounded-circle mr-2"
             :src="`${ author_avatar }`"
             :alt="`${ author }`"
           />
-          <div class="info-body d-flex flex-column align-self-center">
+          <div class="info-body d-flex flex-column align-self-center overflow-text">
             <span class="author">{{ author }}</span>
             <span class="update-time">{{ update_time | moment('YY/MM/DD HH:mm:ss') }}</span>
           </div>
@@ -192,6 +192,11 @@ export default {
 </div>
 </template>
 <style type="text/css">
+.overflow-text {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
 .media-card {
   position: relative;
   display: flex;
@@ -266,15 +271,15 @@ export default {
   width: 1.5rem;
 }
 .content {
-  overflow:hidden;
+  /*overflow:hidden;
   text-overflow:ellipsis;
-  white-space:nowrap;
-  /*overflow: hidden;
+  white-space:nowrap;*/
+  overflow: hidden;
   text-overflow: ellipsis;
   display:-webkit-box;
   -webkit-box-orient:vertical;
   -webkit-line-clamp:2;
-  margin-bottom: 0;*/
+  margin-bottom: 0;
 }
 
 .media-card-footer {
