@@ -235,7 +235,7 @@ export default {
   <Layout>
     <div class="row justify-content-md-center m-0 mt-3 mb-3">
       <!-- 类型选择 -->
-      <div class="col-1 pl-0 pr-3">
+      <div class="col-2 pl-0 pr-3">
         <select class="form-control custom-select" v-model="type">
           <option>video</option>
           <option>audio</option>
@@ -243,7 +243,7 @@ export default {
         </select>
       </div>
       <!-- ES搜索 -->
-      <div class="col-10 pl-0 pr-3">
+      <div class="col-8 pl-0 pr-3">
         <b-form-input
           placeholder="e.g. mime:video/mp4 AND title:kitty AND platform:youtube"
           v-model="query"
@@ -251,7 +251,7 @@ export default {
         ></b-form-input>
       </div>  
       <!-- 时间选择 -->
-      <div class="col-1 pl-0 pr-0">
+      <div class="col-2 pl-0 pr-0">
         <flat-pickr
           v-model="dateTime"
           :config="dateTimePicker"
