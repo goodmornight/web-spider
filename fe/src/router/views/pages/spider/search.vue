@@ -36,17 +36,23 @@ export default {
       chartOptions: {
         chart: {
           type: 'bar',
-          height: 350,
+          width: 100,
+          height: 900,
+          // height: 350,
           // offsetX: -10,
-          // offsetY: 5,
+          // offsetY: -5,
           toolbar: {
             show: false
           },
+          parentHeightOffset: 0
+          // sparkline: {
+          //   enabled: true
+          // },
         },
         plotOptions: {
           bar: {
             horizontal: false,
-            columnWidth: '55%',
+            columnWidth: '100%',
             // endingShape: 'rounded'
           },
         },
@@ -57,6 +63,7 @@ export default {
         stroke: {
           show: true,
           width: 2,
+          curve: 'smooth',
           colors: ['transparent']
         },
         xaxis: {
@@ -65,13 +72,15 @@ export default {
             show: false,
           },
           labels: {
+            minHeight:10,
             format: 'MM/dd HH:mm',
           }
         },
         yaxis: {
-          title: {
-            text: 'Total'
-          }
+          show: false
+          // title: {
+          //   text: 'Total'
+          // }
         },
         fill: {
           opacity: 1
@@ -312,8 +321,13 @@ export default {
     <div ref="row" class="row p-0 m-0 mb-4">
       <div class="col-12 p-0 m-0">
         <div class="card mb-0">
-          <div class="card-body pb-0">
-            <apexchart type="bar" height="150" :options="chartOptions" :series="series"></apexchart>
+          <div class="card-body py-0">
+            <apexchart
+              type="bar"
+              height="100"
+              :options="chartOptions"
+              :series="series"
+            ></apexchart>
             <div v-show="isChartLoading" class="loading-overlay">
               <b-spinner label="Loading..." variant="primary" class="mx-auto"></b-spinner>
             </div>
