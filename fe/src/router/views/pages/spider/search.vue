@@ -200,6 +200,9 @@ export default {
 
       this.st = new Date(selectedDates[0]).getTime()
       this.et = new Date(selectedDates[1]).getTime()
+      this.mediaData = []
+      this.getMediaData()
+      this.getChartData()
 
     },
     handleScroll(e){
@@ -225,6 +228,12 @@ export default {
       this.mediaData = []
       this.getMediaData()
       this.getChartData()
+    },
+    selectChange() {
+      // console.log('修改类型')
+      this.mediaData = []
+      this.getMediaData()
+      this.getChartData()
     }  
   },
 
@@ -236,7 +245,7 @@ export default {
     <div class="row justify-content-md-center m-0 mt-3 mb-3">
       <!-- 类型选择 -->
       <div class="col-2 pl-0 pr-3">
-        <select class="form-control custom-select" v-model="type">
+        <select class="form-control custom-select" v-model="type" @change="selectChange">
           <option>video</option>
           <option>audio</option>
           <option>image</option>

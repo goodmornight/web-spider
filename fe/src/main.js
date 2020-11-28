@@ -72,36 +72,36 @@ Vue.component('apexchart', VueApexCharts)
 //   }
 // })
 
-let app = null
-Vue.use(VueKeyCloak, {
-  init: {
-    onLoad: 'login-required',
-    checkLoginIframe: false
-  },
-  config: {
-    url: process.env.VUE_APP_AUTH_URL,
-    realm: process.env.VUE_APP_AUTH_REALM,
-    clientId: process.env.VUE_APP_AUTH_CLIENT_ID,
-  },
-  onReady: kc => {
-    console.log(kc)
-    kc.loadUserProfile().success((data) => {
-      store.commit('auth/SET_CURRENT_USER', data)
-      console.log(data)
-    })
-    app = new Vue({
-      router,
-      store,
-      render: (h) => h(App),
-    }).$mount('#app')
-  }
-})
+// let app = null
+// Vue.use(VueKeyCloak, {
+//   init: {
+//     onLoad: 'login-required',
+//     checkLoginIframe: false
+//   },
+//   config: {
+//     url: process.env.VUE_APP_AUTH_URL,
+//     realm: process.env.VUE_APP_AUTH_REALM,
+//     clientId: process.env.VUE_APP_AUTH_CLIENT_ID,
+//   },
+//   onReady: kc => {
+//     console.log(kc)
+//     kc.loadUserProfile().success((data) => {
+//       store.commit('auth/SET_CURRENT_USER', data)
+//       console.log(data)
+//     })
+//     app = new Vue({
+//       router,
+//       store,
+//       render: (h) => h(App),
+//     }).$mount('#app')
+//   }
+// })
 
-// const app = new Vue({
-//   router,
-//   store,
-//   render: (h) => h(App),
-// }).$mount('#app')
+const app = new Vue({
+  router,
+  store,
+  render: (h) => h(App),
+}).$mount('#app')
 
 // If running e2e tests...
 if (process.env.VUE_APP_TEST === 'e2e') {
