@@ -91,3 +91,8 @@ export default {
 		<Rightsidebar />
 	</div>
 </template>
+<style type="text/css">
+.content-page {
+	margin-top:58px;
+}
+</style>

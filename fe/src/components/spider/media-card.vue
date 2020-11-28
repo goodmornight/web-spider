@@ -125,7 +125,7 @@ export default {
           />
           <div class="info-body d-flex flex-column align-self-center overflow-text">
             <span class="author">{{ author }}</span>
-            <span class="update-time">{{ update_time | moment('YY/MM/DD HH:mm:ss') }}</span>
+            <span class="update-time">{{ create_time | moment('YY/MM/DD HH:mm:ss') }}</span>
           </div>
           <img class="source" :src="icons[domain]" />
         </div>

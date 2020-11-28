@@ -36,7 +36,7 @@ export default {
         chart: {
           type: 'bar',
           height: 350,
-          offsetX: -10,
+          // offsetX: -10,
           // offsetY: 5,
           toolbar: {
             show: false
@@ -64,7 +64,7 @@ export default {
             show: false,
           },
           labels: {
-            format: 'yy/MM/dd HH:mm',
+            format: 'MM/dd HH:mm',
           }
         },
         yaxis: {

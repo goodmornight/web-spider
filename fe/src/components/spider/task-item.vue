@@ -41,10 +41,11 @@ export default {
 }
 </script>
 <template>
-  <div class="col-xl-4 col-lg-6 pl-2 pr-2">
+  <div class="col-12 pl-2 pr-2">
     <div class="card">
       <!-- 主任务 -->
-      <div class="card-body pb-1">
+      <div class="card-body">
+        
         <div class="badge float-right text-uppercase"
         :class="{
           'badge-soft-warning':
@@ -57,9 +58,10 @@ export default {
         >
           {{ type }}
         </div>
-        <p class="text-success font-size-13 mb-2 overflow-text">
+        <span class="text-success font-size-13 mb-2 overflow-text">
           {{ id }}
-        </p>
+        </span>
+        
         <div class="row">
 
           <div class="col-xl-6 col-lg-8 col-md-8 col-sm-10 col-xs-10 overflow-text">
@@ -102,10 +104,9 @@ export default {
         </div>
       </div>
       <!-- 子任务 -->
-      <div class="card-body border-top">
-        <VuePerfectScrollbar v-if="!this.$_.isEmpty(sub_tasks)" class="scroll-area" :setting="settings">
+      <div v-if="!this.$_.isEmpty(sub_tasks)" class="card-body border-top row">
+        <div class="col-6" v-for="(isSubTaskCompleted, subTaskId) in sub_tasks">
           <div
-            v-for="(isSubTaskCompleted, subTaskId) in sub_tasks"
             :key="subTaskId"
             class="card mb-2 shadow-none border"
           >
@@ -140,10 +141,8 @@ export default {
               </div>
             </div>
           </div>
-        </VuePerfectScrollbar>
-        <div v-else>
-          <span class="text-muted"> Sub-task is null.</span>
         </div>
+        
       </div>
 
     </div>
