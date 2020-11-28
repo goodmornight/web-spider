@@ -16,14 +16,20 @@ import request from '@utils/request'
 import VueKeyCloak from '@dsb-norge/vue-keycloak-js'
 import _ from 'lodash'
 import VueNoty from 'vuejs-noty'
+import waterfall from 'vue-waterfall2'
+// import Loading from 'vue-loading-overlay'
+
 
 import 'vuejs-noty/dist/vuejs-noty.css'
+// import 'vue-loading-overlay/dist/vue-loading.css'
 
 Vue.use(VueNoty, {
   theme:'sunset',
   timeout: 4000,
   layout: 'bottomRight'
 })
+Vue.use(waterfall)
+// Vue.use(Loading)
 Vue.use(VueFeather)
 Vue.use(flatPickr)
 

@@ -102,8 +102,8 @@ export default {
 </script>
 <template>
 <!-- <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-4"> -->
-<div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-4">
-  <div class="media-card mb-0">
+<!-- <div class="col-12"> -->
+  <div class="media-card">
     <!-- 卡片头部信息 -->
     <div class="media-card-top" @click="showImgModal">
       <b-img-lazy
@@ -190,7 +190,7 @@ export default {
     </b-modal>
     
   </div>
-</div>
+<!-- </div> -->
 </template>
 <style type="text/css">
 .overflow-text {

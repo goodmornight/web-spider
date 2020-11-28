@@ -13,6 +13,7 @@ export default {
   components: { Layout, MediaCard },
   data() {
     return {
+      col: 4,
       type: 'video',
       query: '',
       et: new Date().getTime(),
@@ -84,15 +85,31 @@ export default {
         },
       },
       mediaData:[],
-      chartData:[]
+      chartData:[],
+      isBottom: false
     }
   },
   computed:{
+    // 图标数据
     series() {
       return [{
         name: 'Download',
         data: this.chartData
       }]
+    },
+    // 卡片宽度
+    itemWidth(){
+      console.log(document.documentElement.clientWidth)
+      // return (138*0.5*(document.documentElement.clientWidth/375))
+      // return (138*0.45*(document.documentElement.clientWidth/375))
+      return (document.documentElement.clientWidth-120-this.gutterWidth*(this.col-1))/this.col
+    },
+    // 卡片间隔
+    gutterWidth(){
+      // return (9*0.5*(document.documentElement.clientWidth/375))
+      // return (9*0.6*(document.documentElement.clientWidth/375))
+      console.log(this.$refs.row)
+      return 24
     }
   },
   created() {
@@ -100,26 +117,31 @@ export default {
 
     // })
   },
+
   mounted() {
-    // this.$store.commit('layout/CHANGE_LEFT_SIDEBAR_TYPE', 'condensed')
-    window.addEventListener('scroll', this.handleScroll)
+    // window.addEventListener('scroll', this.handleScroll)
     this.getMediaData()
     this.getChartData()
   },
+
   beforeDestroy(){
-    window.removeEventListener('scroll', this.handleScroll)
+    // window.removeEventListener('scroll', this.handleScroll)
   },
+
   methods: {
+
+    // 获取媒体数据
     getMediaData() {
       this.isMediaLoading = true
-      // this.fetchMediaData(this.queryData(false))
       this.fetchMediaData()
     },
+
+    // 获取图表数据
     getChartData() {
       this.isChartLoading = true
-      // this.fetchChartData(this.queryData(true))
       this.fetchChartData()
     },
+
     // 格式化请求数据
     queryData(stat) {
       let q = {
@@ -133,6 +155,7 @@ export default {
       }
       return queryString.stringify(q)
     },
+
     // 请求媒体数据
     fetchMediaData() {
 
@@ -146,18 +169,18 @@ export default {
         size: this.size,
         from: this.from,
       }
-
       console.log(query)
+
       this.$request.post('/query?' + queryString.stringify(query))
       .then((res) => {
         console.log(res)
-        
+        vm.isMediaLoading = false
         if(res.data.code === 1){
-          vm.isMediaLoading = false
+          
           vm.$noty.success(res.data.msg)
           vm.mediaData.push(...res.data.data)
         }else{
-          vm.mediaData = []
+          // vm.mediaData = []
           vm.$noty.warning(res.data.msg)
         }
       })
@@ -166,6 +189,8 @@ export default {
       })     
       
     },
+
+    // 请求图表数据
     fetchChartData() {
 
       const vm = this
@@ -186,8 +211,9 @@ export default {
         if(res.data.code === 1){
           vm.isChartLoading = false
           vm.chartData = res.data.data
+          vm.$noty.success(res.data.msg)
         }else{
-
+          vm.$noty.warning(res.data.msg)
         }
       })
       .catch((err) => {
@@ -195,23 +221,23 @@ export default {
       })     
       
     },
-    // 获取选择时间
+
+    // 选择时间段修改，获取选择时间
     onTimeChange(selectedDates, dateStr, instance) {
 
       this.st = new Date(selectedDates[0]).getTime()
       this.et = new Date(selectedDates[1]).getTime()
-      this.mediaData = []
-      this.getMediaData()
-      this.getChartData()
+      this.toSearch()
 
     },
+
+    // 处理
     handleScroll(e){
-      const vm = this
-      //滚动条滚动距离
+      // 滚动条滚动距离
       let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-      //窗口可视范围高度
+      // 窗口可视范围高度
       let clientHeight = document.documentElement.clientHeight
-      //文档内容实际高度（包括超出视窗的溢出部分）
+      // 文档内容实际高度（包括超出视窗的溢出部分）
       let scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight)
 
       // console.log('scrollTop = ' + scrollTop)
@@ -220,21 +246,34 @@ export default {
 
       if (scrollTop + clientHeight + 5 >= scrollHeight) {
         console.log('已滚至底部')
+        this.isBottom = true 
+      }else{
+        this.isBottom = false
+      }
+
+      if(this.isBottom){
         this.from = this.from + this.size
         this.getMediaData()
+        this.isBottom = false
       }
     }, 
+
+    // 搜索
     toSearch() {
       this.mediaData = []
       this.getMediaData()
       this.getChartData()
     },
-    selectChange() {
-      // console.log('修改类型')
-      this.mediaData = []
+    loadmore() {
+      this.from = this.from + this.size
       this.getMediaData()
-      this.getChartData()
-    }  
+    },
+    scroll(scrollData) {
+      // console.log(scrollData)
+    },
+    finish() {
+      console.log('完成渲染')
+    }
   },
 
 }
@@ -245,7 +284,7 @@ export default {
     <div class="row justify-content-md-center m-0 mt-3 mb-3">
       <!-- 类型选择 -->
       <div class="col-2 pl-0 pr-3">
-        <select class="form-control custom-select" v-model="type" @change="selectChange">
+        <select class="form-control custom-select" v-model="type" @change="toSearch">
           <option>video</option>
           <option>audio</option>
           <option>image</option>
@@ -270,11 +309,11 @@ export default {
       </div>
     </div>
     <!-- 图表 -->
-    <div class="row p-0 m-0 mb-4">
+    <div ref="row" class="row p-0 m-0 mb-4">
       <div class="col-12 p-0 m-0">
         <div class="card mb-0">
           <div class="card-body pb-0">
-            <apexchart type="bar" height="196" :options="chartOptions" :series="series"></apexchart>
+            <apexchart type="bar" height="150" :options="chartOptions" :series="series"></apexchart>
             <div v-show="isChartLoading" class="loading-overlay">
               <b-spinner label="Loading..." variant="primary" class="mx-auto"></b-spinner>
             </div>
@@ -283,9 +322,12 @@ export default {
       </div>
     </div>
     <!-- 媒体列表 -->
-    <div class="row">
+    <!-- <div class="row">
       <MediaCard v-for="(media, index) in mediaData" :media="media._source" />
-    </div>
+    </div> -->
+    <waterfall ref="waterfall" :col="col" :width="itemWidth" :gutterWidth="gutterWidth" :data="mediaData" @loadmore="loadmore" @scroll="scroll" @finish="finish">
+      <MediaCard v-for="(media, index) in mediaData" :media="media" />
+    </waterfall>
     <!-- <div class="waterfall">
       <MediaCard v-for="(media, index) in mediaData" :media="media._source" />
     </div> -->
