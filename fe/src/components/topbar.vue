@@ -36,7 +36,7 @@ export default {
 
 <template>
 	<!-- Topbar Start -->
-	<div class="navbar navbar-expand flex-column flex-md-row navbar-custom">
+	<div class="navbar navbar-expand flex-column flex-md-row navbar-custom topbar-custom sticky-top">
 		<div class="container-fluid">
 			<!-- LOGO -->
 			<!-- <a href="/" class="navbar-brand mr-0 mr-md-2 logo"> -->
@@ -396,5 +396,8 @@ export default {
 }
 .button-menu-mobile {
 	outline: none !important;
+}
+.topbar-custom {
+	height: 58px;
 }
 </style>

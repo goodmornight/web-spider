@@ -456,8 +456,8 @@ const tasksRoutes = [
 ]
 const SearchRoutes = [
   {
-    path: '/search',
-    name: 'Search',
+    path: '/medialib',
+    name: 'MediaLib',
     icon: 'search',
     component: () => lazyLoadView(import('@views/pages/spider/search')),
     meta: { authRequired: true },

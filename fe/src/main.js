@@ -20,7 +20,9 @@ import VueNoty from 'vuejs-noty'
 import 'vuejs-noty/dist/vuejs-noty.css'
 
 Vue.use(VueNoty, {
+  theme:'sunset',
   timeout: 4000,
+  layout: 'bottomRight'
 })
 Vue.use(VueFeather)
 Vue.use(flatPickr)

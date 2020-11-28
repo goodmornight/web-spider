@@ -315,13 +315,14 @@
           &:hover {
             > a {
               position: relative;
-              width: calc(190px + #{$leftbar-width-collapsed});
+              // width: calc(190px + #{$leftbar-width-collapsed});
               color: $menu-item-active !important;
               background-color: $menu-item-bg-hover;
               transition: none;
 
               span {
-                display: inline;
+                // display: inline;
+                display: none;
               }
             }
 

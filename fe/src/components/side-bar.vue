@@ -96,9 +96,19 @@ export default {
 
 <template>
 	<!-- ========== Left Sidebar Start ========== -->
-	<div class="left-side-menu">
+	<div class="left-side-menu left-side-menu-custom">
 		<div class="media user-profile mt-2 mb-2">
 			<img
+				src="@assets/images/users/avatar.png"
+				class="avatar-sm rounded-circle mr-2"
+				alt="Avatar"
+			/>
+			<img
+				src="@assets/images/users/avatar.png"
+				class="avatar-xs rounded-circle mr-2"
+				alt="Avatar"
+			/>
+			<!-- <img
 				src="@assets/images/users/avatar-7.jpg"
 				class="avatar-sm rounded-circle mr-2"
 				alt="Shreyu"
@@ -107,7 +117,7 @@ export default {
 				src="@assets/images/users/avatar-7.jpg"
 				class="avatar-xs rounded-circle mr-2"
 				alt="Shreyu"
-			/>
+			/> -->
 
 			<div class="media-body">
 				<!-- <h6 class="pro-user-name mt-0 mb-0">{{ user.name }}</h6>
@@ -180,6 +190,21 @@ export default {
 				<Appmenu />
 			</div>
 		</div>
+		<!-- <div class="sidebar-content">
+			<VuePerfectScrollbar
+				v-if="!isCondensed"
+				v-once
+				class="slimscroll-menu"
+				:settings="settings"
+			>
+				<div id="sidebar-menu">
+					<Appmenu />
+				</div>
+			</VuePerfectScrollbar>
+			<div v-else id="sidebar-menu">
+				<Appmenu />
+			</div>
+		</div> -->
 		<!-- Sidebar -left -->
 	</div>
 	<!-- Left Sidebar End -->
@@ -198,5 +223,11 @@ export default {
 .ps > .ps__scrollbar-y-rail:active > .ps__scrollbar-y,
 .ps > .ps__scrollbar-y-rail:hover > .ps__scrollbar-y {
 	width: 6px !important;
+}
+.left-side-menu-custom {
+	top:58px;
+}
+.left-side-menu-condensed .left-side-menu {
+	position: fixed;
 }
 </style>
