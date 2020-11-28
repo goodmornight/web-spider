@@ -37,7 +37,7 @@ export default {
         chart: {
           type: 'bar',
           width: 100,
-          height: 900,
+          height: 80,
           // height: 350,
           // offsetX: -10,
           // offsetY: -5,
