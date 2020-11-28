@@ -101,6 +101,7 @@ export default {
 }
 </script>
 <template>
+<!-- <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-4"> -->
 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-4">
   <div class="media-card mb-0">
     <!-- 卡片头部信息 -->

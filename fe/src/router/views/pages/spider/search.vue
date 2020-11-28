@@ -286,6 +286,10 @@ export default {
     <div class="row">
       <MediaCard v-for="(media, index) in mediaData" :media="media._source" />
     </div>
+    <!-- <div class="waterfall">
+      <MediaCard v-for="(media, index) in mediaData" :media="media._source" />
+    </div> -->
+
     <div class="row">
       <b-spinner v-show="isMediaLoading" label="Loading..." variant="primary" class="mx-auto"></b-spinner>
     </div>
@@ -293,17 +297,21 @@ export default {
   </Layout>
 </template>
 <style type="text/css">
-  .loading-overlay{
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    text-align: center;
-    background-color: rgba(255, 255, 255, 0.35);
-    border-radius: 0.25rem;
-  }
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.35);
+  border-radius: 0.25rem;
+}
+.waterfall {
+  column-count: 4;
+  column-gap: 10px;
+}
 </style>
