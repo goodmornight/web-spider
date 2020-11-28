@@ -2,6 +2,9 @@
 import Layout from '@layouts/main'
 import MediaCard from '@components/spider/media-card'
 import queryString from 'query-string'
+import Loading from 'vue-loading-overlay'
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css'
 
 /**
  * Search component
@@ -10,9 +13,10 @@ export default {
   page: {
     title: 'Search',
   },
-  components: { Layout, MediaCard },
+  components: { Layout, MediaCard, Loading },
   data() {
     return {
+      isLoading: false,
       col: 4,
       type: 'video',
       query: '',
@@ -99,6 +103,9 @@ export default {
     }
   },
   computed:{
+    isChartLoadingShow() {
+      return !this.isMediaLoading && this.isChartLoading
+    },
     // 图标数据
     series() {
       return [{
@@ -129,8 +136,8 @@ export default {
 
   mounted() {
     // window.addEventListener('scroll', this.handleScroll)
-    this.getMediaData()
-    this.getChartData()
+    this.fetchMediaData()
+    this.fetchChartData()
   },
 
   beforeDestroy(){
@@ -138,18 +145,6 @@ export default {
   },
 
   methods: {
-
-    // 获取媒体数据
-    getMediaData() {
-      this.isMediaLoading = true
-      this.fetchMediaData()
-    },
-
-    // 获取图表数据
-    getChartData() {
-      this.isChartLoading = true
-      this.fetchChartData()
-    },
 
     // 格式化请求数据
     queryData(stat) {
@@ -169,8 +164,8 @@ export default {
     fetchMediaData() {
 
       const vm = this
-
-      let query = {
+      
+      let queryData = {
         type: this.type || '',
         q: this.query || '',
         st: parseInt(this.st/1000),
@@ -178,22 +173,24 @@ export default {
         size: this.size,
         from: this.from,
       }
-      console.log(query)
 
-      this.$request.post('/query?' + queryString.stringify(query))
+      this.isMediaLoading = true
+
+      this.$request.post('/query?' + queryString.stringify(queryData))
       .then((res) => {
         console.log(res)
         vm.isMediaLoading = false
         if(res.data.code === 1){
           
-          vm.$noty.success(res.data.msg)
           vm.mediaData.push(...res.data.data)
+          vm.$noty.success(res.data.msg)
+          
         }else{
-          // vm.mediaData = []
           vm.$noty.warning(res.data.msg)
         }
       })
       .catch((err) => {
+        vm.isMediaLoading = false
         console.log(err)
       })     
       
@@ -203,7 +200,7 @@ export default {
     fetchChartData() {
 
       const vm = this
-
+      
       let query = {
         type: this.type || '',
         q: this.query || '',
@@ -212,11 +209,12 @@ export default {
         only_stat: true
       }
 
-      console.log(query)
+      this.isChartLoading = true
+
       this.$request.post('/querys?' + queryString.stringify(query))
       .then((res) => {
         console.log(res)
-        
+        vm.isChartLoading = true
         if(res.data.code === 1){
           vm.isChartLoading = false
           vm.chartData = res.data.data
@@ -226,6 +224,7 @@ export default {
         }
       })
       .catch((err) => {
+        vm.isChartLoading = true
         console.log(err)
       })     
       
@@ -240,7 +239,7 @@ export default {
 
     },
 
-    // 处理
+    // 处理，暂时不用
     handleScroll(e){
       // 滚动条滚动距离
       let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
@@ -262,7 +261,7 @@ export default {
 
       if(this.isBottom){
         this.from = this.from + this.size
-        this.getMediaData()
+        this.fetchMediaData()
         this.isBottom = false
       }
     }, 
@@ -270,19 +269,21 @@ export default {
     // 搜索
     toSearch() {
       this.mediaData = []
-      this.getMediaData()
-      this.getChartData()
+      this.fetchMediaData()
+      this.fetchChartData()
     },
+    // 加载更多
     loadmore() {
       this.from = this.from + this.size
-      this.getMediaData()
+      this.fetchMediaData()
     },
     scroll(scrollData) {
       // console.log(scrollData)
     },
     finish() {
       console.log('完成渲染')
-    }
+    },
+
   },
 
 }
@@ -322,33 +323,36 @@ export default {
       <div class="col-12 p-0 m-0">
         <div class="card mb-0">
           <div class="card-body py-0">
+            <loading :active.sync="isChartLoadingShow" loader="dots" color="#5369f8" :is-full-page="false"></loading>
             <apexchart
               type="bar"
               height="100"
               :options="chartOptions"
               :series="series"
             ></apexchart>
-            <div v-show="isChartLoading" class="loading-overlay">
+            <!-- <div v-show="isChartLoading" class="loading-overlay">
               <b-spinner label="Loading..." variant="primary" class="mx-auto"></b-spinner>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
     </div>
     <!-- 媒体列表 -->
-    <!-- <div class="row">
-      <MediaCard v-for="(media, index) in mediaData" :media="media._source" />
-    </div> -->
-    <waterfall ref="waterfall" :col="col" :width="itemWidth" :gutterWidth="gutterWidth" :data="mediaData" @loadmore="loadmore" @scroll="scroll" @finish="finish">
-      <MediaCard v-for="(media, index) in mediaData" :media="media" />
-    </waterfall>
+
+    <div>
+      <loading :active.sync="isMediaLoading" loader="dots" color="#5369f8" :is-full-page="true"></loading>
+      <waterfall ref="waterfall" :col="col" :width="itemWidth" :gutterWidth="gutterWidth" :data="mediaData" @loadmore="loadmore" @scroll="scroll" @finish="finish">
+        <!-- <loading :active.sync="isMediaLoading" loader="dots" color="#5369f8" :is-full-page="false"></loading> -->
+        <MediaCard v-for="(media, index) in mediaData" :media="media" />
+      </waterfall>
+    </div>
     <!-- <div class="waterfall">
       <MediaCard v-for="(media, index) in mediaData" :media="media._source" />
     </div> -->
 
-    <div class="row">
+    <!-- <div class="row">
       <b-spinner v-show="isMediaLoading" label="Loading..." variant="primary" class="mx-auto"></b-spinner>
-    </div>
+    </div> -->
     
   </Layout>
 </template>
