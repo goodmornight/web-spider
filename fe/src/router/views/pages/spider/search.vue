@@ -3,7 +3,7 @@ import Layout from '@layouts/main'
 import MediaCard from '@components/spider/media-card'
 import queryString from 'query-string'
 import Loading from 'vue-loading-overlay'
-// Import stylesheet
+
 import 'vue-loading-overlay/dist/vue-loading.css'
 
 /**
@@ -16,7 +16,6 @@ export default {
   components: { Layout, MediaCard, Loading },
   data() {
     return {
-      isLoading: false,
       col: 4,
       type: 'video',
       query: '',
@@ -232,11 +231,11 @@ export default {
 
     // 选择时间段修改，获取选择时间
     onTimeChange(selectedDates, dateStr, instance) {
-
-      this.st = new Date(selectedDates[0]).getTime()
-      this.et = new Date(selectedDates[1]).getTime()
-      this.toSearch()
-
+      if(!isNaN(selectedDates[0]) && !isNaN(selectedDates[1])){
+        this.st = new Date(selectedDates[0]).getTime()
+        this.et = new Date(selectedDates[1]).getTime()
+        this.toSearch()
+      }
     },
 
     // 处理，暂时不用

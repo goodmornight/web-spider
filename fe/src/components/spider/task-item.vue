@@ -27,10 +27,10 @@ export default {
     return {
       ...this.task,
       icons:{
-        'youtube': require('@assets/images/brands/youtube.svg'),
-        'twitter': require('@assets/images/brands/twitter.svg'),
-        'vimeo': require('@assets/images/brands/vimeo.svg'),
-        'flickr': require('@assets/images/brands/flickr.svg'),
+        'youtube.com': require('@assets/images/brands/youtube.svg'),
+        'twitter.com': require('@assets/images/brands/twitter.svg'),
+        'vimeo.com': require('@assets/images/brands/vimeo.svg'),
+        'flickr.com': require('@assets/images/brands/flickr.svg'),
         'clyp.it': require('@assets/images/brands/clyp.it.svg'),
       },
       settings: {
@@ -42,9 +42,9 @@ export default {
 </script>
 <template>
   <div class="col-12 pl-2 pr-2">
-    <div class="card">
+    <div class="card mb-3">
       <!-- 主任务 -->
-      <div class="card-body">
+      <div class="card-body p-3">
         
         <div class="badge float-right text-uppercase"
         :class="{
@@ -77,7 +77,7 @@ export default {
 
         </div>
         
-        <div class="row mb-2">
+        <div class="row">
 
           <div class="col-6">
             <!-- 创建时间 -->

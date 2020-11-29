@@ -1,6 +1,9 @@
 <script>
 import Layout from '@layouts/main'
 import TaskItem from '@components/spider/task-item'
+import Loading from 'vue-loading-overlay'
+
+import 'vue-loading-overlay/dist/vue-loading.css'
 
 /**
  * TasksController component
@@ -9,32 +12,33 @@ export default {
   page: {
     title: 'Tasks'
   },
-  components: { Layout, TaskItem },
+  components: { Layout, TaskItem, Loading },
   data() {
     return {
       websock: null,
       searchData: "",
-      // taskData:[]
-      taskData:[{
-        fid:"81d876f01b404ea983012293e4ac6bdc",
-        id: "c84bdb7bcef14772a797372af92c0ac7",
-        url:"https://vimeo.com/76979871",
-        domain:"vimeo",
-        type: "info",
-        create_time: 1606120037,
-        update_time: 1706120037,
-        sub_tasks: {
-          "f15bbd3fa5044dfbb7692bdc15e98e1a": true,
-          "40a676c4bbd544efba9df4472af7a272": false
-        }
-      }]
+      taskData:[],
+      isLoading: false,
+      // taskData:[{
+      //   fid:"81d876f01b404ea983012293e4ac6bdc",
+      //   id: "c84bdb7bcef14772a797372af92c0ac7",
+      //   url:"https://vimeo.com/76979871",
+      //   domain:"vimeo",
+      //   type: "info",
+      //   create_time: 1606120037,
+      //   update_time: 1706120037,
+      //   sub_tasks: {
+      //     "f15bbd3fa5044dfbb7692bdc15e98e1a": true,
+      //     "40a676c4bbd544efba9df4472af7a272": false
+      //   }
+      // }]
     }
   },
   created() {
-    // this.initWebSocket()
+    this.initWebSocket()
   },
   destroyed() {
-    // this.websock.close()
+    this.websock.close()
   },
   methods:{
     toCreateTasks(){
@@ -49,6 +53,7 @@ export default {
         // 请求成功
         if(res.data.code === 1){
           console.log('添加成功')
+          vm.isLoading = true
           vm.searchData = ""
           vm.$noty.success(res.data.msg)
         }else{
@@ -85,9 +90,9 @@ export default {
 
     // 数据接收
     websocketonmessage(res){
-      console.log(res)
       const message = JSON.parse(res.data)
       console.log(message)
+      this.isLoading = false
       if(message.code === 1){
         this.taskData = []
         this.taskData = message.data
@@ -122,6 +127,7 @@ export default {
     </div>
 
     <div class="row">
+      <loading :active.sync="isLoading" loader="dots" color="#5369f8" :is-full-page="false"></loading>
       <TaskItem v-for="(task, index) in taskData" :task="task"/>
     </div>
     
