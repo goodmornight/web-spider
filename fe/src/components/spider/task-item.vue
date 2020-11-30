@@ -45,19 +45,7 @@ export default {
     <div class="card mb-3">
       <!-- 主任务 -->
       <div class="card-body p-3">
-        
-        <div class="badge float-right text-uppercase"
-        :class="{
-          'badge-soft-warning':
-            `${type}` === 'list',
-          'badge-soft-info':
-            `${type}` === 'info',
-          'badge-soft-success':
-            `${type}` === 'media',
-        }"
-        >
-          {{ type }}
-        </div>
+
         <span class="text-success font-size-13 mb-2 overflow-text">
           {{ id }}
         </span>
@@ -68,44 +56,44 @@ export default {
             <span class="url font-size-18 mr-2">
               <a :href="task.url" target="_blank">{{ url }}</a>
             </span>
-            <p v-if="fid!==''" class="text-muted font-size-12 m-0">from <span class="text-info">{{ fid }}</span></p>
-          </div>
-
-          <div class="col-xl-6 col-lg-4 col-md-4 col-sm-2 col-xs-2">
-            <img class="source" :src="icons[domain]" />
           </div>
 
         </div>
         
-        <div class="row">
-
-          <div class="col-6">
+        <div class="d-flex align-items-center">
+          <div class="badge float-right text-uppercase mr-3"
+          :class="{
+            'badge-soft-warning':
+              `${type}` === 'list',
+            'badge-soft-info':
+              `${type}` === 'info',
+            'badge-soft-success':
+              `${type}` === 'media',
+          }"
+          >
+            {{ type }}
+          </div>
+          <!-- <div class="col-2 text-success"> -->
+          <div class="text-success mr-3">
             <!-- 创建时间 -->
-            <p class="mt-2 mb-1 text-muted overflow-text">Created Time</p>
-            <div class="media">
-              <i class="uil uil-schedule font-18 text-success mr-1"></i>
-              <div class="media-body overflow-text">
-                <span class="mt-1 font-size-14 time">{{ create_time | moment('YY/MM/DD HH:mm:ss') }}</span>
-              </div>
-            </div>
+            <i class="uil uil-schedule font-18 mr-1"></i>
+            <span class="mt-1 font-size-14 time">{{ create_time | moment("from", "now") }}</span>
           </div>
-
-          <div class="col-6">
-            <!-- 更新时间 -->
-            <p class="mt-2 mb-1 text-muted overflow-text">Upated Time</p>
-            <div class="media">
-              <i class="uil uil-schedule font-18 text-success mr-1"></i>
-              <div class="media-body overflow-text">
-                <span class="mt-1 font-size-14 time">{{ update_time | moment('YY/MM/DD HH:mm:ss') }}</span>
-              </div>
-            </div>
+          <div v-if="fid!==''" class="text-info overflow-text mr-3">
+            <!-- fid -->
+            <i class="uil uil-cloud-database-tree font-18 mr-1"></i>
+            <span class="mt-1 font-size-14">{{ fid }}</span>
           </div>
-
+          <div class="text-primary mr-3">
+            <!-- domain -->
+            <i class="uil uil-cloud-download font-18 mr-1"></i>
+            <span class="mt-1 font-size-14">{{ domain }}</span>
+          </div>
         </div>
       </div>
       <!-- 子任务 -->
       <div v-if="!this.$_.isEmpty(sub_tasks)" class="card-body border-top row">
-        <div class="col-6" v-for="(isSubTaskCompleted, subTaskId) in sub_tasks">
+        <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-xs-12" v-for="(isSubTaskCompleted, subTaskId) in sub_tasks">
           <div
             :key="subTaskId"
             class="card mb-2 shadow-none border"
@@ -113,13 +101,7 @@ export default {
             <div class="p-1 px-2">
               <div class="row align-items-center">
                 <div class="col-auto">
-                  <div class="avatar-sm font-weight-bold mr-3">
-                    <span
-                      class="avatar-title rounded bg-soft-primary text-primary"
-                    >
-                      <i class="uil-file-plus-alt font-size-18"></i>
-                    </span>
-                  </div>
+                  <i class="uil-file-plus-alt font-size-18"></i>
                 </div>
                 <div class="col pl-0 overflow-text">
                   <a
@@ -142,7 +124,6 @@ export default {
             </div>
           </div>
         </div>
-        
       </div>
 
     </div>
