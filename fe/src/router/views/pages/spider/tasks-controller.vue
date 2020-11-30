@@ -18,30 +18,54 @@ export default {
     return {
       websock: null,
       searchData: "",
-      // taskData:[],
+      taskData:[],
       isLoading: false,
-      taskData:[{
-        fid:"81d876f01b404ea983012293e4ac6bdc",
-        id: "c84bdb7bcef14772a797372af92c0ac7",
-        url:"https://vimeo.com/76979871",
-        domain:"youtube.com",
-        type: "info",
-        create_time: 1606120037,
-        update_time: 1706120037,
-        sub_tasks: {
-          "f15bbd3fa5044dfbb7692bdc15e98e1a": true,
-          "40a676c4bbd544efba9df4472af7a272": false,
-          "40a676c4bbd544efba9df4472af7a282": false,
-          "40a676c4bbd544efba9df4472af7a292": false,
-        }
-      }]
+      // taskData:[{
+      //   fid:"81d876f01b404ea983012293e4ac6bdc",
+      //   id: "c84bdb7bcef14772a797372af92c0ac7",
+      //   url:"https://vimeo.com/76979871",
+      //   domain:"youtube.com",
+      //   type: "info",
+      //   create_time: 1606120037,
+      //   update_time: 1706120037,
+      //   state:"waiting",
+      //   sub_tasks: {
+      //     "f15bbd3fa5044dfbb7692bdc15e98e1a": {
+      //       state: "waiting",
+      //       type: "media"
+      //     },
+      //     "40a676c4bbd544efba9df4472af7a272": {
+      //       state: "running",
+      //       type: "list"
+      //     },
+      //     "40a676c4bbd544efba9df4472af7a292": {
+      //       state: "done",
+      //       type: "info"
+      //     },
+      //   }
+      // }]
+      // taskData:[{
+      //   fid:"81d876f01b404ea983012293e4ac6bdc",
+      //   id: "c84bdb7bcef14772a797372af92c0ac7",
+      //   url:"https://vimeo.com/76979871",
+      //   domain:"youtube.com",
+      //   type: "info",
+      //   create_time: 1606120037,
+      //   update_time: 1706120037,
+      //   sub_tasks: {
+      //     "f15bbd3fa5044dfbb7692bdc15e98e1a": true,
+      //     "40a676c4bbd544efba9df4472af7a272": false,
+      //     "40a676c4bbd544efba9df4472af7a282": false,
+      //     "40a676c4bbd544efba9df4472af7a292": false,
+      //   }
+      // }]
     }
   },
   created() {
-    // this.initWebSocket()
+    this.initWebSocket()
   },
   destroyed() {
-    // this.websock.close()
+    this.websock.close()
   },
   methods:{
     toCreateTasks(){
