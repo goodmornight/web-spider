@@ -24,19 +24,21 @@ export default {
 
       let i = Math.floor(Math.log(value) / Math.log(k))
 
+      if(i < 0) return value.toPrecision(3) + ' MB'
+
       return (value / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i]
     },
   },
-  data(){
+  data() {
     return {
       ...this.media,
       // defaultThumbnail: 'https://picsum.photos/900/600/?image=41',
       defaultThumbnail: require('@assets/images/music.jpg'),
       icons:{
-        'youtube': require('@assets/images/brands/youtube.svg'),
-        'twitter': require('@assets/images/brands/twitter.svg'),
-        'vimeo': require('@assets/images/brands/vimeo.svg'),
-        'flickr': require('@assets/images/brands/flickr.svg'),
+        'youtube.com': require('@assets/images/brands/youtube.svg'),
+        'twitter.com': require('@assets/images/brands/twitter.svg'),
+        'vimeo.com': require('@assets/images/brands/vimeo.svg'),
+        'flickr.com': require('@assets/images/brands/flickr.svg'),
         'clyp.it': require('@assets/images/brands/clyp.it.svg'),
       },
       // playerOptions: {
@@ -101,98 +103,107 @@ export default {
 }
 </script>
 <template>
-<!-- <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-4"> -->
-<!-- <div class="col-12"> -->
-  <div class="media-card">
-    <!-- 卡片头部信息 -->
-    <div class="media-card-top" @click="showImgModal">
-      <b-img-lazy
-        :src="`${ thumbnail_url === ''? defaultThumbnail : thumbnail_url }`"
-        :alt="file_name"
-        fluid
-      ></b-img-lazy>
-      <i v-if="type!=='image'" variant="warning" class="uil uil-play" @click="showModal"></i>
-    </div>
-    
-    <div class="position-relative">
-      <!-- 卡片中间用户/来源等信息 -->
-      <div class="media-card-body">
-        <h5 class="media-title overflow-text">{{ title }}</h5>
-        <div class="d-flex flex-row align-self-center">
-          <img
-            class="avatar-sm rounded-circle mr-2"
-            :src="`${ author_avatar }`"
-            :alt="`${ author }`"
-          />
-          <div class="info-body d-flex flex-column align-self-center overflow-text">
-            <span class="author">{{ author }}</span>
-            <span class="update-time">{{ create_time | moment('YY/MM/DD HH:mm:ss') }}</span>
+
+  <transition name="fade">
+
+    <div class="media-card">
+      <!-- 卡片头部信息 -->
+      <div class="media-card-top" @click="showImgModal">
+        <b-img-lazy
+          :src="`${ thumbnail_url === ''? defaultThumbnail : thumbnail_url }`"
+          :alt="file_name"
+          fluid
+        ></b-img-lazy>
+        <i v-if="type!=='image'" variant="warning" class="uil uil-play" @click="showModal"></i>
+      </div>
+      
+      <div class="position-relative">
+        <!-- 卡片中间用户/来源等信息 -->
+        <div class="media-card-body">
+          <h5 class="media-title overflow-text">{{ title }}</h5>
+          <div class="d-flex flex-row align-self-center">
+            <img
+              class="avatar-sm rounded-circle mr-2"
+              :src="`${ author_avatar }`"
+              alt="avatar"
+            />
+            <div class="info-body d-flex flex-column align-self-center overflow-text">
+              <span class="author">{{ author }}</span>
+              <span class="update-time">{{ create_time | moment('YY/MM/DD HH:mm:ss') }}</span>
+            </div>
+            <img class="source" :src="icons[domain]" />
           </div>
-          <img class="source" :src="icons[domain]" />
+          <p class="content ml-auto">
+            {{ content }}
+          </p>
         </div>
-        <p class="content ml-auto">
-          {{ content }}
-        </p>
-      </div>
 
-      <!-- 卡片底部文件类型和版权信息 -->
-      <div class="media-card-footer">
-        <span class="fileType">{{ mime }}</span>
-        <span class="fileSize">
-          <i class="uil uil-down-arrow"></i>
-          <!-- {{ file_size | gbFilter }} -->
-          {{ fileSizeMB}}
-        </span>
-        <span v-show="isEncrypted" class="ml-auto encrypted">
-          Encrypted data detected
-        </span>
-        <div v-show="isEncrypted" class="media-card-overlay"> 
+        <!-- 卡片底部文件类型和版权信息 -->
+        <div class="media-card-footer">
+          <span class="fileType">{{ mime }}</span>
+          <span class="fileSize">
+            <i class="uil uil-down-arrow"></i>
+            <!-- {{ file_size | gbFilter }} -->
+            {{ fileSizeMB }}
+          </span>
+          <span v-show="isEncrypted" class="ml-auto encrypted">
+            Encrypted data detected
+          </span>
+          <div v-show="isEncrypted" class="media-card-overlay"> 
+          </div>
         </div>
-      </div>
 
+      </div>
+      
+      <!-- 视频、音频弹出框 -->
+      <b-modal
+        ref="modal"
+        centered
+        size="lg"
+        :title="file_name"
+        title-class="font-18"
+        header-class="d-none"
+        content-class="border-0"
+        body-class="p-0"
+        hide-footer
+      >
+        <VideoPlayer 
+        class="vjs-custom-skin video-player"
+        ref="videoPlayer"
+        :options="playerOptions"
+        :playsinline="true" />
+      </b-modal>
+
+      <b-modal
+        ref="imgModal"
+        centered
+        size="lg"
+        :title="file_name"
+        title-class="font-18"
+        header-class="d-none"
+        content-class="border-0"
+        body-class="p-0"
+        hide-footer
+      >
+        <b-img
+          :src="`${ thumbnail_url === ''? defaultThumbnail : thumbnail_url }`"
+          :alt="file_name"
+          fluid
+        ></b-img>
+      </b-modal>
+      
     </div>
-    
-    <!-- 视频、音频弹出框 -->
-    <b-modal
-      ref="modal"
-      centered
-      size="lg"
-      :title="file_name"
-      title-class="font-18"
-      header-class="d-none"
-      content-class="border-0"
-      body-class="p-0"
-      hide-footer
-    >
-      <VideoPlayer 
-      class="vjs-custom-skin video-player"
-      ref="videoPlayer"
-      :options="playerOptions"
-      :playsinline="true" />
-    </b-modal>
 
-    <b-modal
-      ref="imgModal"
-      centered
-      size="lg"
-      :title="file_name"
-      title-class="font-18"
-      header-class="d-none"
-      content-class="border-0"
-      body-class="p-0"
-      hide-footer
-    >
-      <b-img
-        :src="`${ thumbnail_url === ''? defaultThumbnail : thumbnail_url }`"
-        :alt="file_name"
-        fluid
-      ></b-img>
-    </b-modal>
-    
-  </div>
-<!-- </div> -->
+  </transition>
+
 </template>
 <style type="text/css">
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to{
+  opacity: 0;
+}
 .overflow-text {
   overflow:hidden;
   text-overflow:ellipsis;
@@ -328,15 +339,4 @@ export default {
 .media-body-class {
   padding: 0;
 }
-/*.model-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1050;
-  display: none;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  outline: 0;
-}*/
 </style>

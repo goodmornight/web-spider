@@ -18,20 +18,22 @@ import _ from 'lodash'
 import VueNoty from 'vuejs-noty'
 import waterfall from 'vue-waterfall2'
 
-
+import animated from 'animate.css'
 import 'vuejs-noty/dist/vuejs-noty.css'
 
-Vue.use(VueNoty, {
-  theme:'sunset',
-  timeout: 4000,
-  layout: 'bottomRight'
-})
 Vue.use(waterfall)
+Vue.use(animated)
 Vue.use(VueFeather)
 Vue.use(flatPickr)
 
 Vue.use(VueRouter)
 Vue.use(vco)
+
+Vue.use(VueNoty, {
+  theme:'sunset',
+  timeout: 4000,
+  layout: 'bottomCenter'
+})
 
 // Don't warn about using the dev version of Vue in development.
 Vue.config.productionTip = process.env.NODE_ENV === 'production'
@@ -52,10 +54,6 @@ Vue.use(VueMask)
 Vue.use(require('vue-moment'))
 
 Vue.component('apexchart', VueApexCharts)
-
-// Uncomment this if you are having api served through other url or do not want to use fake backend
-// Vue.prototype.$http = require('axios')
-// Vue.prototype.$http.defaults.baseURL  = 'http://mock-api.coderthemes.com/'
 
 // let app = null
 // Vue.use(VueKeyCloak, {

@@ -42,7 +42,7 @@ export default {
 			<!-- <a href="/" class="navbar-brand mr-0 mr-md-2 logo"> -->
 			<a href="/" class="navbar-brand mr-0 mr-md-2">
 				<span class="logo-lg">
-					<!-- <img src="@assets/images/logo.png" alt height="24" /> -->
+					<!-- <img src="@assets/images/custom/logo3.png" alt height="25" /> -->
 					<span class="d-inline h5 ml-2 text-logo">GreenLight</span>
 				</span>
 				<span class="logo-sm">

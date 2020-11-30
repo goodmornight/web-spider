@@ -10,10 +10,13 @@ import 'vue-loading-overlay/dist/vue-loading.css'
  * Search component
  */
 export default {
+
   page: {
     title: 'Search',
   },
+
   components: { Layout, MediaCard, Loading },
+
   data() {
     return {
       col: 4,
@@ -98,13 +101,17 @@ export default {
       },
       mediaData:[],
       chartData:[],
-      isBottom: false
+      isBottom: false,
+      isNull: false
     }
   },
-  computed:{
+
+  computed: {
+    // 单独图表的加载显示
     isChartLoadingShow() {
       return !this.isMediaLoading && this.isChartLoading
     },
+
     // 图标数据
     series() {
       return [{
@@ -112,6 +119,7 @@ export default {
         data: this.chartData
       }]
     },
+
     // 卡片宽度
     itemWidth(){
       console.log(document.documentElement.clientWidth)
@@ -119,6 +127,7 @@ export default {
       // return (138*0.45*(document.documentElement.clientWidth/375))
       return (document.documentElement.clientWidth-120-this.gutterWidth*(this.col-1))/this.col
     },
+
     // 卡片间隔
     gutterWidth(){
       // return (9*0.5*(document.documentElement.clientWidth/375))
@@ -126,11 +135,7 @@ export default {
       console.log(this.$refs.row)
       return 24
     }
-  },
-  created() {
-    // this.$nextTick(() => {
 
-    // })
   },
 
   mounted() {
@@ -150,8 +155,8 @@ export default {
       let q = {
         type: this.type || '',
         q: this.query || '',
-        st: parseInt(this.st/1000),
-        et: parseInt(this.et/1000),
+        st: this.st,
+        et: this.et,
         size: this.size,
         from: this.from,
         only_stat: stat
@@ -164,18 +169,18 @@ export default {
 
       const vm = this
       
-      let queryData = {
-        type: this.type || '',
-        q: this.query || '',
-        st: parseInt(this.st/1000),
-        et: parseInt(this.et/1000),
-        size: this.size,
-        from: this.from,
-      }
+      // let queryData = {
+      //   type: this.type || '',
+      //   q: this.query || '',
+      //   st: this.st,
+      //   et: this.et,
+      //   size: this.size,
+      //   from: this.from,
+      // }
 
       this.isMediaLoading = true
 
-      this.$request.post('/query?' + queryString.stringify(queryData))
+      this.$request.post('/query?' + vm.queryData(''))
       .then((res) => {
         console.log(res)
         vm.isMediaLoading = false
@@ -200,17 +205,19 @@ export default {
 
       const vm = this
       
-      let query = {
-        type: this.type || '',
-        q: this.query || '',
-        st: parseInt(this.st/1000),
-        et: parseInt(this.et/1000),
-        only_stat: true
-      }
+      // let query = {
+      //   type: this.type || '',
+      //   q: this.query || '',
+      //   st: this.st,
+      //   et: this.et,
+      //   size: this.size,
+      //   from: this.from,
+      //   only_stat: true
+      // }
 
       this.isChartLoading = true
 
-      this.$request.post('/querys?' + queryString.stringify(query))
+      this.$request.post('/query?' + vm.queryData(true))
       .then((res) => {
         console.log(res)
         vm.isChartLoading = true
@@ -254,11 +261,11 @@ export default {
       if (scrollTop + clientHeight + 5 >= scrollHeight) {
         console.log('已滚至底部')
         this.isBottom = true 
-      }else{
+      } else {
         this.isBottom = false
       }
 
-      if(this.isBottom){
+      if(this.isBottom) {
         this.from = this.from + this.size
         this.fetchMediaData()
         this.isBottom = false
@@ -291,25 +298,30 @@ export default {
 <template>
   <Layout>
     <div class="row justify-content-md-center m-0 mt-3 mb-3">
+
       <!-- 类型选择 -->
       <div class="col-2 pl-0 pr-3">
-        <select class="form-control custom-select" v-model="type" @change="toSearch">
+        <select class="form-control custom-select border-light" v-model="type" @change="toSearch">
           <option>video</option>
           <option>audio</option>
           <option>image</option>
         </select>
       </div>
+
       <!-- ES搜索 -->
       <div class="col-8 pl-0 pr-3">
         <b-form-input
+          class="border-light"
           placeholder="e.g. mime:video/mp4 AND title:kitty AND platform:youtube"
           v-model="query"
           @keyup.enter="toSearch"
         ></b-form-input>
-      </div>  
+      </div>
+
       <!-- 时间选择 -->
       <div class="col-2 pl-0 pr-0">
         <flat-pickr
+          class="border-light"
           v-model="dateTime"
           :config="dateTimePicker"
           @on-change="onTimeChange"
@@ -317,11 +329,13 @@ export default {
         ></flat-pickr>
       </div>
     </div>
+
     <!-- 图表 -->
     <div ref="row" class="row p-0 m-0 mb-4">
       <div class="col-12 p-0 m-0">
         <div class="card mb-0">
           <div class="card-body py-0">
+
             <loading :active.sync="isChartLoadingShow" loader="dots" color="#5369f8" :is-full-page="false"></loading>
             <apexchart
               type="bar"
@@ -329,33 +343,37 @@ export default {
               :options="chartOptions"
               :series="series"
             ></apexchart>
-            <!-- <div v-show="isChartLoading" class="loading-overlay">
-              <b-spinner label="Loading..." variant="primary" class="mx-auto"></b-spinner>
-            </div> -->
+
           </div>
         </div>
       </div>
     </div>
-    <!-- 媒体列表 -->
 
+    <!-- 媒体列表 -->
     <div>
       <loading :active.sync="isMediaLoading" loader="dots" color="#5369f8" :is-full-page="true"></loading>
-      <waterfall ref="waterfall" :col="col" :width="itemWidth" :gutterWidth="gutterWidth" :data="mediaData" @loadmore="loadmore" @scroll="scroll" @finish="finish">
+      <waterfall v-if="mediaData.length !== 0" ref="waterfall" :col="col" :width="itemWidth" :gutterWidth="gutterWidth" :data="mediaData" @loadmore="loadmore" @scroll="scroll" @finish="finish">
         <!-- <loading :active.sync="isMediaLoading" loader="dots" color="#5369f8" :is-full-page="false"></loading> -->
-        <MediaCard v-for="(media, index) in mediaData" :media="media" />
+        <MediaCard v-for="(media, index) in mediaData" :key="media.id" :media="media" />
       </waterfall>
+    </div>
+
+    <div v-if="mediaData.length === 0" class="text-center">
+      <p>Media library is null.</p>
     </div>
     <!-- <div class="waterfall">
       <MediaCard v-for="(media, index) in mediaData" :media="media._source" />
-    </div> -->
-
-    <!-- <div class="row">
-      <b-spinner v-show="isMediaLoading" label="Loading..." variant="primary" class="mx-auto"></b-spinner>
-    </div> -->
-    
+    </div> -->  
   </Layout>
 </template>
 <style type="text/css">
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+body::-webkit-scrollbar {
+  display: none;
+}
 .loading-overlay {
   position: absolute;
   top: 0;
@@ -373,4 +391,7 @@ export default {
   column-count: 4;
   column-gap: 10px;
 }
+/*.border-light input{
+  border: 1px solid #5369f8!important;
+}*/
 </style>
