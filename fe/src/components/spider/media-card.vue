@@ -72,7 +72,7 @@ export default {
     playerOptions(){
       return {
         height: '300',
-        muted: true,
+        // muted: true,
         language: 'zh-CN',
         fluid: true,
         playbackRates: [0.7, 1.0, 1.5, 2.0],

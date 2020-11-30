@@ -16,7 +16,7 @@ export default {
 
   data() {
     return {
-      ...this.task,
+      // ...this.task,
       icons:{
         'youtube.com': require('@assets/images/brands/youtube.svg'),
         'twitter.com': require('@assets/images/brands/twitter.svg'),
@@ -29,6 +29,9 @@ export default {
       },
     }
   },
+  computed: {
+
+  }
 }
 </script>
 <template>
@@ -38,7 +41,7 @@ export default {
     <div class="col-12 pl-2 pr-2">
       <div class="card mb-2"
         :class="{
-          'main-task-border': `${ fid }` === ''
+          'main-task-border': `${ task.fid }` === ''
         }"
       >
 
@@ -48,28 +51,28 @@ export default {
             <div class="col-1">
               <div class="badge text-uppercase"
               :class="{
-                'badge-soft-info': `${type}` === 'list',
-                'badge-soft-danger': `${type}` === 'media',
-                'badge-soft-success': `${type}` === 'info',
+                'badge-soft-info': `${ task.type }` === 'list',
+                'badge-soft-danger': `${ task.type }` === 'media',
+                'badge-soft-success': `${ task.type }` === 'info',
               }"
               >
-                {{ type }}
+                {{ task.type }}
               </div>
             </div>
 
             <div class="col-2 overflow-text">
-              <img class="source" :src="icons[domain]" />
-              <span class="ml-2">{{ domain }}</span>
+              <img class="source" :src="icons[ task.domain ]" />
+              <span class="ml-2">{{ task.domain }}</span>
             </div>
 
             <div class="col-3 text-success overflow-text consolas-text">
-              {{ id }}
+              {{ task.id }}
             </div>
 
             <div class="col-3 overflow-text">
               <span class="url">
                 <a :href="task.url" target="_blank">
-                  {{ url }}
+                  {{ task.url }}
                 </a>
               </span>
             </div>
@@ -77,26 +80,26 @@ export default {
             <div class="col-1">
               <div class="badge text-uppercase"
               :class="{
-                'badge-soft-info': `${state}` === 'running',
-                'badge-soft-warning': `${state}` === 'waiting',
-                'badge-soft-success': `${state}` === 'done',
+                'badge-soft-info': `${ task.state }` === 'running',
+                'badge-soft-warning': `${ task.state }` === 'waiting',
+                'badge-soft-success': `${ task.state }` === 'done',
               }"
               >
-                {{ state }}
+                {{ task.state }}
               </div>
             </div>
 
             <div class="col-2 overflow-text">
               <span class="mt-1 font-size-14 float-right time">
-                {{ create_time | moment('MM/DD HH:mm:ss') }}
+                {{ task.create_time | moment('MM/DD HH:mm:ss') }}
               </span>
             </div>
 
           </div>
         </div>
 
-        <div v-if="sub_tasks.length !== 0" class="card-body row pt-0 pb-0">
-          <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12" v-for="(subTask, subTaskId) in sub_tasks" :key="subTaskId">
+        <div v-if="task.sub_tasks.length !== 0" class="card-body row pt-0 pb-0">
+          <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12" v-for="(subTask, subTaskId) in task.sub_tasks" :key="subTaskId">
             <div
               :key="subTaskId"
               class="card shadow-none border mb-2"

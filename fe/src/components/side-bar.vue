@@ -122,8 +122,11 @@ export default {
 			<div class="media-body">
 				<!-- <h6 class="pro-user-name mt-0 mb-0">{{ user.name }}</h6>
 				<span class="pro-user-desc">Administrator</span> -->
-				<h6 class="pro-user-name mt-0 mb-0" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{ user.username }}</h6>
-				<span class="pro-user-desc" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-transform: none;">{{ user.email }}</span>
+				<!-- <h6 class="pro-user-name mt-0 mb-0" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{ user.username }}</h6>
+				<span class="pro-user-desc" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-transform: none;">{{ user.email }}</span> -->
+				<h6 class="pro-user-name mt-0 mb-0" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{ currentUser.username }}</h6>
+				<span class="pro-user-desc" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-transform: none;">{{ currentUser.email }}</span>
+				
 			</div>
 			<b-dropdown variant="black" class="align-self-center" toggle-class="p-0">
 				<template v-slot:button-content>

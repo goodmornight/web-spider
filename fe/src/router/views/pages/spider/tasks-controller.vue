@@ -25,7 +25,7 @@ export default {
     return {
       websock: null,
       searchData: "",
-      taskData:[],
+      taskData: [],
       isLoading: false,
       // taskData:[{
       //   fid:"81d876f01b404ea983012293e4ac6bdc",
@@ -163,19 +163,23 @@ export default {
   <Layout>
     <VuePerfectScrollbar>
     <div class="row mt-2 mb-2 p-2">
-      <b-form-input
-        v-model="searchData"
-        class="col-12"
-        placeholder="Some text value..."
-        type="url"
-        @keyup.enter="toCreateTasks"
-      ></b-form-input>
+      <div class="col-12">
+        <b-form-input
+          v-model="searchData"
+          class="col-12"
+          placeholder="Paste URL here..."
+          type="url"
+          @keyup.enter="toCreateTasks"
+        ></b-form-input>
+      </div>
     </div>
 
     <div class="row">
-      <loading :active.sync="isLoading" loader="dots" color="#5369f8" :is-full-page="false"></loading>
-      <!-- <TaskItem v-for="(task, index) in taskData" :task="task"/> -->
-      <TaskListItem v-for="(task, index) in taskData" :key="task.id" :task="task"/>
+      <div class="col-12">
+        <loading :active.sync="isLoading" loader="dots" color="#5369f8" :is-full-page="false"></loading>
+        <!-- <TaskItem v-for="(task, index) in taskData" :task="task"/> -->
+        <TaskListItem v-for="(task, index) in taskData" :key="task.id" :task="task"/>
+      </div>
     </div>
 
     <div v-if="this.taskData.length === 0" class="text-center">
@@ -220,12 +224,3 @@ export default {
     </VuePerfectScrollbar>
   </Layout>
 </template>
-<style type="text/css">
-body {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-body::-webkit-scrollbar {
-  display: none; /* Chrome Safari */
-}
-</style>
