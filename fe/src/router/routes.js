@@ -476,7 +476,8 @@ const authProtectedRoutes = [
   ...tasksRoutes,
   ...SearchRoutes
 ]
-const allRoutes = [...authRoutes, ...authProtectedRoutes, ...errorPagesRoutes]
+// const allRoutes = [...authRoutes, ...authProtectedRoutes, ...errorPagesRoutes]
+const allRoutes = [...authProtectedRoutes, ...errorPagesRoutes]
 
 export { allRoutes, authProtectedRoutes }
 

@@ -56,8 +56,6 @@ export default {
       <div class="card-body py-2">
         <div class="row d-flex align-items-center">
 
-          
-
           <div class="col-3 text-success overflow-text">
             {{ id }}
           </div>
@@ -70,11 +68,11 @@ export default {
             </span>
           </div>
 
-          <div class="col-3 overflow-text">
+          <!-- <div class="col-3 overflow-text">
             <span v-if="fid!==''" class="text-info">
               {{ fid }}
             </span>
-          </div>
+          </div> -->
 
           <div class="col-1">
             <div class="d-inline-block">

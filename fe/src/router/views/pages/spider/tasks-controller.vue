@@ -130,14 +130,6 @@ export default {
     </div>
 
     <div class="row">
-      <div class="col-12 row">
-        <div class="col-3 pl-4">ID</div>
-        <div class="col-3 pl-4">URL</div>
-        <div class="col-3 pl-4">FID</div>
-        <div class="col-1 pl-4">TYPE</div>
-        <div class="col-1 pl-4">DOMAIN</div>
-        <div class="col-1 pl-4">CREATE</div>
-      </div>
       <loading :active.sync="isLoading" loader="dots" color="#5369f8" :is-full-page="false"></loading>
       <!-- <TaskItem v-for="(task, index) in taskData" :task="task"/> -->
       <TaskListItem v-for="(task, index) in taskData" :task="task"/>
