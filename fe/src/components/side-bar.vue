@@ -99,12 +99,12 @@ export default {
 	<div class="left-side-menu left-side-menu-custom">
 		<div class="media user-profile mt-2 mb-2">
 			<img
-				src="@assets/images/users/avatar.png"
+				src="@assets/images/users/avatar-3.svg"
 				class="avatar-sm rounded-circle mr-2"
 				alt="Avatar"
 			/>
 			<img
-				src="@assets/images/users/avatar.png"
+				src="@assets/images/users/avatar-3.svg"
 				class="avatar-xs rounded-circle mr-2"
 				alt="Avatar"
 			/>

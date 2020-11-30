@@ -102,7 +102,7 @@ export default {
       mediaData:[],
       chartData:[],
       isBottom: false,
-      isNull: false
+      clientWidth: document.documentElement.clientWidth
     }
   },
 
@@ -125,7 +125,7 @@ export default {
       console.log(document.documentElement.clientWidth)
       // return (138*0.5*(document.documentElement.clientWidth/375))
       // return (138*0.45*(document.documentElement.clientWidth/375))
-      return (document.documentElement.clientWidth-120-this.gutterWidth*(this.col-1))/this.col
+      return ( this.clientWidth - 120 - this.gutterWidth * ( this.col - 1 )) / this.col
     },
 
     // 卡片间隔
@@ -140,8 +140,12 @@ export default {
 
   mounted() {
     // window.addEventListener('scroll', this.handleScroll)
+    // const vm = this
     this.fetchMediaData()
     this.fetchChartData()
+    // window.onresize = () => {
+    //   vm.clientWidth = document.documentElement.clientWidth
+    // }
   },
 
   beforeDestroy(){
@@ -301,7 +305,7 @@ export default {
 
       <!-- 类型选择 -->
       <div class="col-2 pl-0 pr-3">
-        <select class="form-control custom-select border-light" v-model="type" @change="toSearch">
+        <select class="form-control custom-select" v-model="type" @change="toSearch">
           <option>video</option>
           <option>audio</option>
           <option>image</option>
@@ -391,7 +395,7 @@ body::-webkit-scrollbar {
   column-count: 4;
   column-gap: 10px;
 }
-/*.border-light input{
+/*input{
   border: 1px solid #5369f8!important;
 }*/
 </style>
