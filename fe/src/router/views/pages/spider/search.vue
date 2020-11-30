@@ -371,13 +371,6 @@ export default {
   </Layout>
 </template>
 <style type="text/css">
-body {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-body::-webkit-scrollbar {
-  display: none;
-}
 .loading-overlay {
   position: absolute;
   top: 0;
