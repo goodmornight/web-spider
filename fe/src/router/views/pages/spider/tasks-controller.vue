@@ -1,5 +1,4 @@
 <script>
-import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import Layout from '@layouts/main'
 import TaskItem from '@components/spider/task-item'
 import Loading from 'vue-loading-overlay'
@@ -15,7 +14,6 @@ export default {
     title: 'Tasks'
   },
   components: {
-    VuePerfectScrollbar,
     Layout,
     TaskItem,
     Loading,
@@ -161,7 +159,6 @@ export default {
 
 <template>
   <Layout>
-    <VuePerfectScrollbar>
     <div class="row mt-2 mb-2 p-2">
       <div class="col-12">
         <b-form-input
@@ -221,6 +218,5 @@ export default {
         <span class="font-size-18 font-weight-bold text-primary"> 288 </span>个。
       </p>
     </div>
-    </VuePerfectScrollbar>
   </Layout>
 </template>

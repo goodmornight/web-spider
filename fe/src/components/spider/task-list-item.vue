@@ -1,11 +1,5 @@
 <script>
-import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-import moment from 'vue-moment'
 export default {
-
-  components: {
-    VuePerfectScrollbar
-  },
 
   props: {
     task: {
@@ -16,7 +10,7 @@ export default {
 
   data() {
     return {
-      // ...this.task,
+
       icons:{
         'youtube.com': require('@assets/images/brands/youtube.svg'),
         'twitter.com': require('@assets/images/brands/twitter.svg'),
@@ -24,16 +18,12 @@ export default {
         'flickr.com': require('@assets/images/brands/flickr.svg'),
         'clyp.it': require('@assets/images/brands/clyp.it.svg'),
       },
-      settings: {
-        maxScrollbarLength: 60
-      },
+
     }
   },
-  computed: {
-
-  }
 }
 </script>
+
 <template>
 
   <transition name="fade">
@@ -138,6 +128,7 @@ export default {
   </transition>
 
 </template>
+
 <style type="text/css">
 .consolas-text {
   font-family: consolas;
