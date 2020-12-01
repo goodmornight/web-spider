@@ -101,7 +101,6 @@ export default {
       },
       mediaData:[],
       chartData:[],
-      isBottom: false,
       clientWidth: document.documentElement.clientWidth
     }
   },
@@ -122,40 +121,32 @@ export default {
 
     // 卡片宽度
     itemWidth(){
-      console.log(document.documentElement.clientWidth)
-      // return (138*0.5*(document.documentElement.clientWidth/375))
-      // return (138*0.45*(document.documentElement.clientWidth/375))
+
       return ( this.clientWidth - 120 - this.gutterWidth * ( this.col - 1 )) / this.col
+
     },
 
-    // 卡片间隔
+    // 卡片间隔,可以再优化一下，等可以连接远程时再改到data位置
     gutterWidth(){
-      // return (9*0.5*(document.documentElement.clientWidth/375))
-      // return (9*0.6*(document.documentElement.clientWidth/375))
-      console.log(this.$refs.row)
+
       return 24
+
     }
 
   },
 
   mounted() {
-    // window.addEventListener('scroll', this.handleScroll)
-    // const vm = this
+
     this.fetchMediaData()
     this.fetchChartData()
-    // window.onresize = () => {
-    //   vm.clientWidth = document.documentElement.clientWidth
-    // }
-  },
 
-  beforeDestroy(){
-    // window.removeEventListener('scroll', this.handleScroll)
   },
 
   methods: {
 
     // 格式化请求数据
     queryData(stat) {
+
       let q = {
         type: this.type || '',
         q: this.query || '',
@@ -165,7 +156,9 @@ export default {
         from: this.from,
         only_stat: stat
       }
+
       return queryString.stringify(q)
+
     },
 
     // 请求媒体数据
@@ -173,33 +166,30 @@ export default {
 
       const vm = this
       
-      // let queryData = {
-      //   type: this.type || '',
-      //   q: this.query || '',
-      //   st: this.st,
-      //   et: this.et,
-      //   size: this.size,
-      //   from: this.from,
-      // }
-
       this.isMediaLoading = true
 
       this.$request.post('/query?' + vm.queryData(''))
       .then((res) => {
-        console.log(res)
+        
         vm.isMediaLoading = false
+
         if(res.data.code === 1){
           
           vm.mediaData.push(...res.data.data)
           vm.$noty.success(res.data.msg)
           
         }else{
+
           vm.$noty.warning(res.data.msg)
+
         }
+
       })
       .catch((err) => {
+
         vm.isMediaLoading = false
-        console.log(err)
+        vm.$noty.error('media error')
+
       })     
       
     },
@@ -208,88 +198,69 @@ export default {
     fetchChartData() {
 
       const vm = this
-      
-      // let query = {
-      //   type: this.type || '',
-      //   q: this.query || '',
-      //   st: this.st,
-      //   et: this.et,
-      //   size: this.size,
-      //   from: this.from,
-      //   only_stat: true
-      // }
 
       this.isChartLoading = true
 
       this.$request.post('/query?' + vm.queryData(true))
       .then((res) => {
-        console.log(res)
-        vm.isChartLoading = true
+
+        vm.isChartLoading = false
+
         if(res.data.code === 1){
-          vm.isChartLoading = false
+
           vm.chartData = res.data.data
           vm.$noty.success(res.data.msg)
+
         }else{
+
           vm.$noty.warning(res.data.msg)
+
         }
       })
       .catch((err) => {
-        vm.isChartLoading = true
-        console.log(err)
+
+        vm.isChartLoading = false
+        vm.$noty.error('chart error')
+
       })     
       
     },
 
     // 选择时间段修改，获取选择时间
     onTimeChange(selectedDates, dateStr, instance) {
-      if(!isNaN(selectedDates[0]) && !isNaN(selectedDates[1])){
+
+      if(!isNaN(selectedDates[0]) && !isNaN(selectedDates[1])) {
+
         this.st = new Date(selectedDates[0]).getTime()
         this.et = new Date(selectedDates[1]).getTime()
         this.toSearch()
+
       }
     },
-
-    // 处理，暂时不用
-    handleScroll(e){
-      // 滚动条滚动距离
-      let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-      // 窗口可视范围高度
-      let clientHeight = document.documentElement.clientHeight
-      // 文档内容实际高度（包括超出视窗的溢出部分）
-      let scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight)
-
-      // console.log('scrollTop = ' + scrollTop)
-      // console.log('clientHeight = ' + clientHeight)
-      // console.log('scrollHeight = ' + scrollHeight)
-
-      if (scrollTop + clientHeight + 5 >= scrollHeight) {
-        console.log('已滚至底部')
-        this.isBottom = true 
-      } else {
-        this.isBottom = false
-      }
-
-      if(this.isBottom) {
-        this.from = this.from + this.size
-        this.fetchMediaData()
-        this.isBottom = false
-      }
-    }, 
 
     // 搜索
     toSearch() {
+
       this.mediaData = []
       this.fetchMediaData()
       this.fetchChartData()
+
     },
+
     // 加载更多
     loadmore() {
+
       this.from = this.from + this.size
       this.fetchMediaData()
+
     },
+
+    // 滚动函数，未来如果需要添加滚动的其他效果可用
     scroll(scrollData) {
       // console.log(scrollData)
     },
+
+    // 瀑布流效果渲染完成
     finish() {
       console.log('完成渲染')
     },
@@ -316,8 +287,8 @@ export default {
       <div class="col-8 pl-0 pr-3">
         <b-form-input
           class="border-light"
-          placeholder="e.g. mime:video/mp4 AND title:kitty AND platform:youtube"
           v-model="query"
+          placeholder="e.g. mime:video/mp4 AND title:kitty AND platform:youtube"
           @keyup.enter="toSearch"
         ></b-form-input>
       </div>
@@ -327,9 +298,9 @@ export default {
         <flat-pickr
           class="border-light"
           v-model="dateTime"
+          placeholder="Select Date Range..."
           :config="dateTimePicker"
           @on-change="onTimeChange"
-          placeholder="Select Date Range..."
         ></flat-pickr>
       </div>
     </div>
@@ -358,7 +329,7 @@ export default {
       <loading :active.sync="isMediaLoading" loader="dots" color="#5369f8" :is-full-page="true"></loading>
       <waterfall v-if="mediaData.length !== 0" ref="waterfall" :col="col" :width="itemWidth" :gutterWidth="gutterWidth" :data="mediaData" @loadmore="loadmore" @scroll="scroll" @finish="finish">
         <!-- <loading :active.sync="isMediaLoading" loader="dots" color="#5369f8" :is-full-page="false"></loading> -->
-        <MediaCard v-for="(media, index) in mediaData" :key="media.id" :media="media" />
+        <MediaCard v-for="media in mediaData" :key="media.id" :media="media" />
       </waterfall>
     </div>
 

@@ -30,7 +30,7 @@ Vue.use(VueRouter)
 Vue.use(vco)
 
 Vue.use(VueNoty, {
-  theme:'sunset',
+  theme: 'sunset',
   timeout: 4000,
   layout: 'bottomCenter'
 })
@@ -67,11 +67,11 @@ Vue.use(VueKeyCloak, {
     clientId: process.env.VUE_APP_AUTH_CLIENT_ID,
   },
   onReady: kc => {
-    console.log(kc)
+
     kc.loadUserProfile().success((data) => {
       store.commit('auth/SET_CURRENT_USER', data)
-      console.log(data)
     })
+    
     app = new Vue({
       router,
       store,

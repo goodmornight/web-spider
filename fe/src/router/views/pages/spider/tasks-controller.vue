@@ -1,6 +1,6 @@
 <script>
 import Layout from '@layouts/main'
-import TaskItem from '@components/spider/task-item'
+// import TaskItem from '@components/spider/task-item'
 import Loading from 'vue-loading-overlay'
 import TaskListItem from '@components/spider/task-list-item'
 
@@ -15,7 +15,7 @@ export default {
   },
   components: {
     Layout,
-    TaskItem,
+    // TaskItem,
     Loading,
     TaskListItem
   },
@@ -128,7 +128,6 @@ export default {
     // 数据接收
     websocketonmessage(res) {
 
-      const vm = this
       const message = JSON.parse(res.data)
 
       this.isLoading = false
@@ -175,11 +174,11 @@ export default {
       <div class="col-12">
         <loading :active.sync="isLoading" loader="dots" color="#5369f8" :is-full-page="false"></loading>
         <!-- <TaskItem v-for="(task, index) in taskData" :task="task"/> -->
-        <TaskListItem v-for="(task, index) in taskData" :key="task.id" :task="task"/>
+        <TaskListItem v-for="task in taskData" :key="task.id" :task="task"/>
       </div>
     </div>
 
-    <div v-if="this.taskData.length === 0" class="text-center">
+    <div v-if="taskData.length === 0" class="text-center">
       <p>系统已运行时长
         <span class="font-size-18 font-weight-bold text-primary"> 14 </span>天，
       </p>
