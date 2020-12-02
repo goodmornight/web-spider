@@ -35,7 +35,30 @@ export default {
         <div class="card">
           <div class="card-body">
             <form>
-              
+
+              <div class="form-group row">
+                <label class="col-lg-2 col-form-label">Media platform</label>
+                <div class="col-lg-10">
+                  <multiselect
+                    v-model="mediaPlatform"
+                    :options="mediaPlatformOptions"
+                    :multiple="true"
+                    placeholder="Pick a media platform"
+                  ></multiselect>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-lg-2 col-form-label">Media type</label>
+                <div class="col-lg-10">
+                  <multiselect
+                    v-model="mediaType"
+                    :options="mediaTypeOptions"
+                    placeholder="Pick a media type"
+                  ></multiselect>
+                </div>
+              </div>
+
               <b-form-group
                 label-cols-sm="10"
                 label-cols-lg="2"
@@ -61,29 +84,21 @@ export default {
                   placeholder="Type other info here..."
                 ></b-form-textarea>
               </b-form-group>
-
-              <div class="form-group row">
-                <label class="col-lg-2 col-form-label">Media type</label>
+              
+              <!-- <div class="form-group row">
+                <label
+                  class="col-lg-2 col-form-label"
+                  for="example-fileinput"
+                  >Default file input</label
+                >
                 <div class="col-lg-10">
-                  <multiselect
-                    v-model="mediaType"
-                    :options="mediaTypeOptions"
-                    placeholder="Pick a media type"
-                  ></multiselect>
+                  <input
+                    id="example-fileinput"
+                    type="file"
+                    class="form-control"
+                  />
                 </div>
-              </div>
-
-              <div class="form-group row">
-                <label class="col-lg-2 col-form-label">Media platform</label>
-                <div class="col-lg-10">
-                  <multiselect
-                    v-model="mediaPlatform"
-                    :options="mediaPlatformOptions"
-                    :multiple="true"
-                    placeholder="Pick a media type"
-                  ></multiselect>
-                </div>
-              </div>
+              </div> -->
 
               <div class="text-center">
                 <button type="submit" class="btn btn-primary">Submit</button>
