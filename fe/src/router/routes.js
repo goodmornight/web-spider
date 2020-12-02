@@ -454,12 +454,24 @@ const tasksRoutes = [
     props: (route) => ({ user: store.state.auth.currentUser || {} }),
   },
 ]
-const SearchRoutes = [
+
+const libRoutes = [
   {
     path: '/medialib',
     name: 'MediaLib',
     icon: 'search',
-    component: () => lazyLoadView(import('@views/pages/spider/search')),
+    component: () => lazyLoadView(import('@views/pages/spider/media-library')),
+    meta: { authRequired: true },
+    props: (route) => ({ user: store.state.auth.currentUser || {} }),
+  },
+]
+
+const uploadRoutes = [
+  {
+    path: '/upload',
+    name: 'Upload',
+    icon: 'upload',
+    component: () => lazyLoadView(import('@views/pages/spider/upload')),
     meta: { authRequired: true },
     props: (route) => ({ user: store.state.auth.currentUser || {} }),
   },
@@ -474,7 +486,8 @@ const authProtectedRoutes = [
   // ...chartsRoutes,
   // ...tablesRoutes,
   ...tasksRoutes,
-  ...SearchRoutes
+  ...libRoutes,
+  ...uploadRoutes
 ]
 const allRoutes = [...authRoutes, ...authProtectedRoutes, ...errorPagesRoutes]
 // const allRoutes = [...authProtectedRoutes, ...errorPagesRoutes]
