@@ -487,7 +487,7 @@ const authProtectedRoutes = [
   // ...tablesRoutes,
   ...tasksRoutes,
   ...libRoutes,
-  ...uploadRoutes
+  // ...uploadRoutes
 ]
 const allRoutes = [...authRoutes, ...authProtectedRoutes, ...errorPagesRoutes]
 // const allRoutes = [...authProtectedRoutes, ...errorPagesRoutes]
