@@ -70,6 +70,19 @@ export default {
     },
 
     playerOptions(){
+      // return {
+      //   height: '300',
+      //   // muted: true,
+      //   language: 'zh-CN',
+      //   fluid: true,
+      //   playbackRates: [0.7, 1.0, 1.5, 2.0],
+      //   sources: [{
+      //     type: this.mime,
+      //     src: this.url,
+      //   }],
+      //   poster: this.thumbnail_url,
+      //   notSupportedMessage: 'Media Error',
+      // }
       return {
         height: '300',
         // muted: true,
@@ -78,15 +91,29 @@ export default {
         playbackRates: [0.7, 1.0, 1.5, 2.0],
         sources: [{
           type: this.mime,
-          src: this.url,
+          src: this.sourceUrl,
         }],
-        poster: this.thumbnail_url,
+        poster: this.thumbnailUrl,
         notSupportedMessage: 'Media Error',
       }
     },
+
     fileSizeMB() {
       return this.file_size.toPrecision(3) + ' MB'
+    },
+
+    avatarUrl() {
+      return process.env.VUE_APP_MIN_IO + this.author_avatar
+    },
+
+    thumbnailUrl() {
+      return this.thumbnail_url === ''? this.defaultThumbnail : process.env.VUE_APP_MIN_IO + this.thumbnail_url
+    },
+
+    sourceUrl() {
+      return process.env.VUE_APP_MIN_IO + this.url
     }
+
   },
   methods: {
     // 显示Modal
@@ -98,6 +125,10 @@ export default {
     showImgModal() {
       if(this.type!=='image') return
       this.$refs.imgModal.show()
+    },
+
+    formatURL(url) {
+      return process.env.VUE_APP_MIN_IO + url
     }
   }
 }
@@ -110,10 +141,15 @@ export default {
       <!-- 卡片头部信息 -->
       <div class="media-card-top" @click="showImgModal">
         <b-img-lazy
-          :src="`${ thumbnail_url === ''? defaultThumbnail : thumbnail_url }`"
+          :src="thumbnailUrl"
           :alt="file_name"
           fluid
         ></b-img-lazy>
+        <!-- <b-img-lazy
+          :src="`${ thumbnail_url === ''? defaultThumbnail : thumbnail_url }`"
+          :alt="file_name"
+          fluid
+        ></b-img-lazy> -->
         <i v-if="type!=='image'" variant="warning" class="uil uil-play" @click="showModal"></i>
       </div>
       
@@ -122,9 +158,14 @@ export default {
         <div class="media-card-body">
           <h5 class="media-title overflow-text">{{ title }}</h5>
           <div class="d-flex flex-row align-self-center">
-            <img
+            <!-- <img
               class="avatar-sm rounded-circle mr-2"
               :src="`${ author_avatar }`"
+              alt="avatar"
+            /> -->
+            <img
+              class="avatar-sm rounded-circle mr-2"
+              :src="avatarUrl"
               alt="avatar"
             />
             <div class="info-body d-flex flex-column align-self-center overflow-text">
@@ -143,8 +184,8 @@ export default {
           <span class="fileType">{{ mime }}</span>
           <span class="fileSize">
             <i class="uil uil-down-arrow"></i>
-            <!-- {{ file_size | gbFilter }} -->
-            {{ fileSizeMB }}
+            {{ file_size | gbFilter }}
+            <!-- {{ fileSizeMB }} -->
           </span>
           <span v-show="isEncrypted" class="ml-auto encrypted">
             Encrypted data detected
@@ -186,10 +227,15 @@ export default {
         hide-footer
       >
         <b-img
-          :src="`${ thumbnail_url === ''? defaultThumbnail : thumbnail_url }`"
+          :src="thumbnailUrl"
           :alt="file_name"
           fluid
         ></b-img>
+        <!-- <b-img
+          :src="`${ thumbnail_url === ''? defaultThumbnail : thumbnail_url }`"
+          :alt="file_name"
+          fluid
+        ></b-img> -->
       </b-modal>
       
     </div>
