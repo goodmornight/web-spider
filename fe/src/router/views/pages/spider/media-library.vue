@@ -225,6 +225,10 @@ export default {
       })     
       
     },
+    onTypeChange() {
+      this.from = 0
+      this.toSearch()
+    },
 
     // 选择时间段修改，获取选择时间
     onTimeChange(selectedDates, dateStr, instance) {
@@ -276,7 +280,7 @@ export default {
 
       <!-- 类型选择 -->
       <div class="col-2 pl-0 pr-3">
-        <select class="form-control custom-select" v-model="type" @change="toSearch">
+        <select class="form-control custom-select" v-model="type" @change="onTypeChange">
           <option>video</option>
           <option>audio</option>
           <option>image</option>
