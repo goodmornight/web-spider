@@ -101,6 +101,7 @@ export default {
       },
       mediaData:[],
       chartData:[],
+      gutterWidth: 24,
       clientWidth: document.documentElement.clientWidth
     }
   },
@@ -127,19 +128,27 @@ export default {
     },
 
     // 卡片间隔,可以再优化一下，等可以连接远程时再改到data位置
-    gutterWidth(){
+    // gutterWidth(){
 
-      return 24
+    //   return 24
 
-    }
+    // }
 
   },
 
   mounted() {
 
+    const vm = this
+
     this.fetchMediaData()
     this.fetchChartData()
 
+    window.onresize = () => {
+      return (() => {
+          window.screenWidth = document.body.clientWidth
+          vm.clientWidth = window.screenWidth
+      })()
+    }
   },
 
   methods: {
@@ -225,22 +234,6 @@ export default {
       })     
       
     },
-    onTypeChange() {
-      this.from = 0
-      this.toSearch()
-    },
-
-    // 选择时间段修改，获取选择时间
-    onTimeChange(selectedDates, dateStr, instance) {
-
-      if(!isNaN(selectedDates[0]) && !isNaN(selectedDates[1])) {
-
-        this.st = new Date(selectedDates[0]).getTime()
-        this.et = new Date(selectedDates[1]).getTime()
-        this.toSearch()
-
-      }
-    },
 
     // 搜索
     toSearch() {
@@ -249,6 +242,26 @@ export default {
       this.fetchMediaData()
       this.fetchChartData()
 
+    },
+
+    // 类型修改
+    onInputChange() {
+      this.from = 0
+      this.toSearch()
+    },
+
+    // 选择时间段修改，获取选择时间
+    onTimeChange(selectedDates, dateStr, instance) {
+
+      this.from = 0
+
+      if(!isNaN(selectedDates[0]) && !isNaN(selectedDates[1])) {
+
+        this.st = new Date(selectedDates[0]).getTime()
+        this.et = new Date(selectedDates[1]).getTime()
+        this.toSearch()
+
+      }
     },
 
     // 加载更多
@@ -280,7 +293,7 @@ export default {
 
       <!-- 类型选择 -->
       <div class="col-2 pl-0 pr-3">
-        <select class="form-control custom-select" v-model="type" @change="onTypeChange">
+        <select class="form-control custom-select" v-model="type" @change="onInputChange">
           <option>video</option>
           <option>audio</option>
           <option>image</option>
@@ -293,7 +306,7 @@ export default {
           class="border-light"
           v-model="query"
           placeholder="e.g. mime:video/mp4 AND title:kitty AND platform:youtube"
-          @keyup.enter="toSearch"
+          @keyup.enter="onInputChange"
         ></b-form-input>
       </div>
 
@@ -332,9 +345,11 @@ export default {
     <div>
       <loading :active.sync="isMediaLoading" loader="dots" color="#5369f8" :is-full-page="true"></loading>
       <waterfall v-if="mediaData.length !== 0" ref="waterfall" :col="col" :width="itemWidth" :gutterWidth="gutterWidth" :data="mediaData" @loadmore="loadmore" @scroll="scroll" @finish="finish">
-        <!-- <loading :active.sync="isMediaLoading" loader="dots" color="#5369f8" :is-full-page="false"></loading> -->
         <MediaCard v-for="media in mediaData" :key="media.id" :media="media" />
       </waterfall>
+      <!-- <waterfall v-if="mediaData.length !== 0" ref="waterfall" :col="col" :gutterWidth="gutterWidth" :data="mediaData" @loadmore="loadmore" @scroll="scroll" @finish="finish">
+        <MediaCard v-for="media in mediaData" :key="media.id" :media="media" />
+      </waterfall> -->
     </div>
 
     <div v-if="mediaData.length === 0" class="text-center">
@@ -359,10 +374,10 @@ export default {
   background-color: rgba(255, 255, 255, 0.35);
   border-radius: 0.25rem;
 }
-.waterfall {
+/*.waterfall {
   column-count: 4;
   column-gap: 10px;
-}
+}*/
 /*input{
   border: 1px solid #5369f8!important;
 }*/
