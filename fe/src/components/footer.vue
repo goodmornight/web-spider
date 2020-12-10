@@ -27,7 +27,6 @@
   color: #6c757d;
 }
 .left-side-menu-condensed .footer-custom {
-  
   left: 70px !important;
 }
 </style>
